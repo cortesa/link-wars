@@ -1,0 +1,26 @@
+{
+  "name": "link-wars",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/cortesa/link-wars-root.git",
+  "author": "Andres <cortesa@gmail.com>",
+  "license": "MIT",
+  "private": true,
+  "workspaces": [
+    "services/*"
+  ],
+  "scripts": {
+    "dev:cashier": "yarn workspace cashier dev",
+    "dev:game": "yarn workspace game-server dev",
+    "dev:client": "yarn workspace client-web dev",
+    "test": "yarn workspaces run test",
+    "lint": "biome check .",
+    "format": "biome format --write ."
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^2.3.10",
+    "tsx": "^4.21.0",
+    "typescript": "^5.9.3",
+    "vitest": "^4.0.16"
+  }
+}
