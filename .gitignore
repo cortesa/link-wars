@@ -36,3 +36,4 @@ yarn-error.log*
 # Project specific
 logs/
 *.log
+services/
