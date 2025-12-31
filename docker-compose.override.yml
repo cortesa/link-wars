@@ -1,0 +1,48 @@
+services:
+  identity:
+    build:
+      context: ./services/identity
+      dockerfile: Dockerfile
+    volumes:
+      - ./services/identity:/app
+      - /app/node_modules
+    ports:
+      - "8080:8080"
+    environment:
+      - NODE_ENV=development
+
+  cashier:
+    build:
+      context: ./services/cashier
+      dockerfile: Dockerfile
+    volumes:
+      - ./services/cashier:/app
+      - /app/node_modules
+    ports:
+      - "3001:3001"
+    environment:
+      - NODE_ENV=development
+
+  game-server:
+    build:
+      context: ./services/game-server
+      dockerfile: Dockerfile
+    volumes:
+      - ./services/game-server:/app
+      - /app/node_modules
+    ports:
+      - "2567:2567"
+    environment:
+      - NODE_ENV=development
+
+  client-web:
+    build:
+      context: ./services/client-web
+      dockerfile: Dockerfile
+    volumes:
+      - ./services/client-web:/app
+      - /app/node_modules
+    ports:
+      - "5173:5173"
+    environment:
+      - NODE_ENV=development

@@ -1,0 +1,34 @@
+services:
+  identity:
+    image: cortesa/link-wars-identity:${PROD_TAG:-latest}
+    restart: always
+    environment:
+      - NODE_ENV=production
+    deploy:
+      resources:
+        limits:
+          cpus: '0.50'
+          memory: 512M
+
+  cashier:
+    image: cortesa/link-wars-cashier:${PROD_TAG:-latest}
+    restart: always
+    environment:
+      - NODE_ENV=production
+
+  game-server:
+    image: cortesa/link-wars-game-server:${PROD_TAG:-latest}
+    restart: always
+    environment:
+      - NODE_ENV=production
+    deploy:
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: 1G
+
+  client-web:
+    image: cortesa/link-wars-client-web:${PROD_TAG:-latest}
+    restart: always
+    environment:
+      - NODE_ENV=production

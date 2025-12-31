@@ -1,56 +1,38 @@
-version: '3.8'
-
 services:
-  # Database for Keycloak
-  keycloak-db:
-    image: postgres:15
-    environment:
-      POSTGRES_DB: keycloak
-      POSTGRES_USER: keycloak
-      POSTGRES_PASSWORD: password
-    volumes:
-      - keycloak_data:/var/lib/postgresql/data
+  identity:
+    image: ${IDENTITY_IMAGE:-cortesa/link-wars-identity:latest}
+    networks:
+      - link-wars-net
+    restart: unless-stopped
 
-  # Identity Provider
-  keycloak:
-    image: quay.io/keycloak/keycloak:22.0.1
-    command: start-dev
-    environment:
-      KC_DB: postgres
-      KC_DB_URL: jdbc:postgresql://keycloak-db:5432/keycloak
-      KC_DB_USERNAME: keycloak
-      KC_DB_PASSWORD: password
-      KEYCLOAK_ADMIN: admin
-      KEYCLOAK_ADMIN_PASSWORD: admin
-    ports:
-      - "8080:8080"
+  cashier:
+    image: ${CASHIER_IMAGE:-cortesa/link-wars-cashier:latest}
     depends_on:
-      - keycloak-db
+      - identity
+    networks:
+      - link-wars-net
+    restart: unless-stopped
 
-  # Database for Cashier API
-  cashier-db:
-    image: postgres:15
-    environment:
-      POSTGRES_DB: cashier
-      POSTGRES_USER: cashier
-      POSTGRES_PASSWORD: password
-    ports:
-      - "5433:5432"
-    volumes:
-      - cashier_data:/var/lib/postgresql/data
+  game-server:
+    image: ${GAME_SERVER_IMAGE:-cortesa/link-wars-game-server:latest}
+    depends_on:
+      - identity
+    networks:
+      - link-wars-net
+    restart: unless-stopped
 
-  # Cache and State (Optional but recommended)
-  redis:
-    image: redis:7-alpine
-    ports:
-      - "6379:6379"
+  client-web:
+    image: ${CLIENT_WEB_IMAGE:-cortesa/link-wars-client-web:latest}
+    depends_on:
+      - game-server
+    networks:
+      - link-wars-net
+    restart: unless-stopped
 
-  # DB Web Administration Tool
-  adminer:
-    image: adminer
-    ports:
-      - "8081:8080"
+networks:
+  link-wars-net:
+    driver: bridge
 
 volumes:
-  keycloak_data:
-  cashier_data:
+  db-data:
+  redis-data:

@@ -1,0 +1,7 @@
+{
+  "recommendations": [
+    "biomejs.biome",
+    "visualstudioexptteam.vscodeintellicode",
+    "ms-vscode.vscode-typescript-next"
+  ]
+}
