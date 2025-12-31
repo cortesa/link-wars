@@ -2,7 +2,7 @@
   "name": "link-wars",
   "version": "1.0.0",
   "main": "index.js",
-  "repository": "https://github.com/cortesa/link-wars-root.git",
+  "repository": "https://github.com/cortesa/link-wars.git",
   "author": "Andres <cortesa@gmail.com>",
   "license": "MIT",
   "private": true,
