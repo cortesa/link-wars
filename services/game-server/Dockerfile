@@ -19,4 +19,5 @@ COPY --from=build /app/services/game-server/dist ./services/game-server/dist
 COPY --from=build /app/services/game-server/package.json ./services/game-server/
 COPY package.json yarn.lock ./
 RUN yarn install --production --frozen-lockfile
+EXPOSE 2567
 CMD ["node", "services/game-server/dist/index.js"]

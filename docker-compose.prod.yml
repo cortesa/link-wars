@@ -1,9 +1,11 @@
 services:
   identity:
-    image: cortesa/link-wars-identity:${PROD_TAG:-latest}
+    image: ${IDENTITY_IMAGE:-cortesa/link-wars-identity:latest}
     restart: always
     environment:
       - NODE_ENV=production
+    networks:
+      - link-wars-net
     deploy:
       resources:
         limits:
@@ -11,16 +13,32 @@ services:
           memory: 512M
 
   cashier:
-    image: cortesa/link-wars-cashier:${PROD_TAG:-latest}
+    build:
+      context: .
+      dockerfile: services/cashier/Dockerfile
+      target: production
+    image: ${CASHIER_IMAGE:-cortesa/link-wars-cashier:latest}
     restart: always
     environment:
       - NODE_ENV=production
+    depends_on:
+      - identity
+    networks:
+      - link-wars-net
 
   game-server:
-    image: cortesa/link-wars-game-server:${PROD_TAG:-latest}
+    build:
+      context: .
+      dockerfile: services/game-server/Dockerfile
+      target: production
+    image: ${GAME_SERVER_IMAGE:-cortesa/link-wars-game-server:latest}
     restart: always
     environment:
       - NODE_ENV=production
+    depends_on:
+      - identity
+    networks:
+      - link-wars-net
     deploy:
       resources:
         limits:
@@ -28,7 +46,19 @@ services:
           memory: 1G
 
   client-web:
-    image: cortesa/link-wars-client-web:${PROD_TAG:-latest}
+    build:
+      context: .
+      dockerfile: services/client-web/Dockerfile
+      target: production
+    image: ${CLIENT_WEB_IMAGE:-cortesa/link-wars-client-web:latest}
     restart: always
     environment:
       - NODE_ENV=production
+    depends_on:
+      - game-server
+    networks:
+      - link-wars-net
+
+networks:
+  link-wars-net:
+    driver: bridge

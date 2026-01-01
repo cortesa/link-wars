@@ -1,28 +1,64 @@
 services:
   identity:
-    image: cortesa/link-wars-identity:${STG_TAG:-staging}
+    image: ${IDENTITY_IMAGE:-cortesa/link-wars-identity:latest}
+    networks:
+      - link-wars-net
+    restart: unless-stopped
     environment:
       - NODE_ENV=staging
     ports:
       - "8080:8080"
 
   cashier:
-    image: cortesa/link-wars-cashier:${STG_TAG:-staging}
+    build:
+      context: .
+      dockerfile: services/cashier/Dockerfile
+      target: production
+    image: ${CASHIER_IMAGE:-cortesa/link-wars-cashier:staging}
     environment:
       - NODE_ENV=staging
+      - PORT=3001
     ports:
       - "3001:3001"
+    depends_on:
+      - identity
+    networks:
+      - link-wars-net
+    restart: unless-stopped
 
   game-server:
-    image: cortesa/link-wars-game-server:${STG_TAG:-staging}
+    build:
+      context: .
+      dockerfile: services/game-server/Dockerfile
+      target: production
+    image: ${GAME_SERVER_IMAGE:-cortesa/link-wars-game-server:staging}
     environment:
       - NODE_ENV=staging
+      - PORT=2568
     ports:
-      - "2567:2567"
+      - "2568:2568"
+    depends_on:
+      - identity
+    networks:
+      - link-wars-net
+    restart: unless-stopped
 
   client-web:
-    image: cortesa/link-wars-client-web:${STG_TAG:-staging}
+    build:
+      context: .
+      dockerfile: services/client-web/Dockerfile
+      target: production
+    image: ${CLIENT_WEB_IMAGE:-cortesa/link-wars-client-web:staging}
     environment:
       - NODE_ENV=staging
     ports:
-      - "80:80"
+      - "81:80"
+    depends_on:
+      - game-server
+    networks:
+      - link-wars-net
+    restart: unless-stopped
+
+networks:
+  link-wars-net:
+    driver: bridge

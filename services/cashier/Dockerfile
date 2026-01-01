@@ -19,4 +19,5 @@ COPY --from=build /app/services/cashier/dist ./services/cashier/dist
 COPY --from=build /app/services/cashier/package.json ./services/cashier/
 COPY package.json yarn.lock ./
 RUN yarn install --production --frozen-lockfile
+EXPOSE 3000
 CMD ["node", "services/cashier/dist/app.js"]
