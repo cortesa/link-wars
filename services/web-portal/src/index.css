@@ -1,0 +1,225 @@
+:root {
+  --bg-color: #000000;
+  --header-bg: #000000;
+  --text-color: #ffffff;
+  --accent-color: #00ff88;
+  --ad-bg: #111111;
+  --border-color: #333333;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* Layout */
+.app-layout {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* Header */
+.main-header {
+  height: 60px;
+  flex-shrink: 0;
+  background-color: var(--header-bg);
+  border-bottom: 1px solid var(--border-color);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 2rem;
+  z-index: 10;
+}
+
+.logo {
+  font-weight: 800;
+  font-size: 1.5rem;
+  letter-spacing: -1px;
+  background: linear-gradient(45deg, #fff, #888);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+nav {
+  display: flex;
+  gap: 1.5rem;
+  align-items: center;
+}
+
+.nav-item {
+  color: #888;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.2s;
+  font-size: 0.95rem;
+}
+
+.nav-item:hover {
+  color: #fff;
+}
+
+.login-btn {
+  background-color: var(--accent-color);
+  color: #000;
+  border: none;
+  padding: 0.5rem 1.25rem;
+  border-radius: 20px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.1s;
+}
+
+.login-btn:hover {
+  transform: scale(1.05);
+}
+
+/* Main Grid */
+.main-content-grid {
+  display: grid;
+  /* Columns: Sidebars flex from 150px to 280px. Center takes remaining space. */
+  grid-template-columns: minmax(150px, 280px) 1fr minmax(150px, 280px);
+  gap: 1rem;
+  padding: 0.5rem 1rem;
+  flex: 1;
+  max-width: 1920px;
+  margin: 0 auto;
+  width: 100%;
+  min-height: 0;
+  overflow: hidden;
+}
+
+/* Ads / Sidebars */
+.ad-column {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  height: 100%;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border-color) transparent;
+}
+
+.ad-placeholder {
+  background-color: var(--ad-bg);
+  border: 1px dashed var(--border-color);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #444;
+  font-size: 0.9rem;
+  flex: 1;
+  min-height: 200px;
+  width: 100%;
+}
+
+/* Game Wrapper */
+.game-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  min-width: 0;
+  height: 100%;
+}
+
+.iframe-container {
+  width: 100%;
+  flex: 1;
+  min-height: 0;
+  background-color: #000;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 0 30px rgba(0,0,0,0.5);
+  border: 1px solid var(--border-color);
+  position: relative;
+}
+
+.game-iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+  display: block;
+}
+
+.game-info {
+  background-color: var(--ad-bg);
+  padding: 1rem;
+  border-radius: 12px;
+  border: 1px solid var(--border-color);
+  flex-shrink: 0;
+}
+
+.game-info h1 {
+  font-size: 1.25rem;
+  margin-bottom: 0.25rem;
+  color: #fff;
+}
+
+.game-info p {
+  color: #888;
+  font-size: 0.9rem;
+  line-height: 1.4;
+}
+
+/* Bottom Content */
+.bottom-content {
+  padding: 0 1.5rem 1rem;
+  max-width: 1920px;
+  margin: 0 auto;
+  width: 100%;
+  flex-shrink: 0;
+}
+
+.ad-banner-placeholder {
+  width: 100%;
+  height: 90px;
+  background-color: var(--ad-bg);
+  border: 1px dashed var(--border-color);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #444;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .main-content-grid {
+    grid-template-columns: 1fr;
+    overflow-y: auto;
+  }
+  
+  .ad-column {
+    display: none;
+  }
+  
+  .game-wrapper {
+    width: 100%;
+    height: auto;
+    flex: none;
+  }
+
+  .iframe-container {
+     aspect-ratio: 16/9;
+     flex: none;
+  }
+
+  body, .app-layout {
+    height: auto;
+    overflow: visible;
+  }
+}

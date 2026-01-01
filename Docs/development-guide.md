@@ -23,7 +23,8 @@ docker compose up
 docker compose up --build
 ```
 
-- **Web Client**: http://localhost:5173
+- **Web Portal**: http://localhost:5173
+- **Game Client**: http://localhost:5174
 - **Cashier API**: http://localhost:3000
 - **Game Server**: http://localhost:2567
 - **Identity (Keycloak)**: http://localhost:8080
@@ -35,7 +36,8 @@ While Docker runs everything in the background, you can also run services locall
 
 - `yarn dev:cashier`: Starts the Cashier API with `tsx watch`.
 - `yarn dev:game`: Starts the Game Server with `tsx watch`.
-- `yarn dev:client`: Starts the Web Client with `Vite`.
+- `yarn dev:client`: Starts the Game Client with `Vite` (port 5174).
+- `yarn dev:portal`: Starts the Web Portal with `Vite` (port 5173).
 
 ### Test-Driven Development (TDD)
 We follow a strict TDD methodology. Always write your tests first!

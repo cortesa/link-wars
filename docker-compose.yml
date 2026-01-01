@@ -82,17 +82,32 @@ services:
       - link-wars-net
     restart: unless-stopped
 
-  client-web:
+  game-client:
     build:
       context: .
-      dockerfile: services/client-web/Dockerfile
+      dockerfile: services/game-client/Dockerfile
       target: development
     volumes:
-      - ./services/client-web:/app/services/client-web
+      - ./services/game-client:/app/services/game-client
+    ports:
+      - "5174:5174"
+    depends_on:
+      - game-server
+    networks:
+      - link-wars-net
+    restart: unless-stopped
+
+  web-portal:
+    build:
+      context: .
+      dockerfile: services/web-portal/Dockerfile
+      target: development
+    volumes:
+      - ./services/web-portal:/app/services/web-portal
     ports:
       - "5173:5173"
     depends_on:
-      - game-server
+      - game-client
     networks:
       - link-wars-net
     restart: unless-stopped

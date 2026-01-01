@@ -9,7 +9,8 @@ The project is structured as a **Yarn Workspaces Monorepo**. This allows us to s
 ### Core Services
 - **`services/cashier`**: 💰 **Cashier API**. Handles the ledger, payments, and balance management. Built with **Fastify**, **Prisma**, and **PostgreSQL**.
 - **`services/game-server`**: 🕹️ **Game Server**. Orchestrates real-time multiplayer logic using **Colyseus** (Node.js).
-- **`services/client-web`**: 🌐 **Web Client**. The game UI and client-side logic powered by **Phaser** and **Vite**.
+- **`services/game-client`**: 👾 **Game Client**. Pure **Phaser** renderer for the game logic (Headless-capable).
+- **`services/web-portal`**: 🌐 **Web Portal**. React-based UI handling Authentication, Advertisements, and Metadata. Embeds the game client.
 - **`services/identity`**: 🔑 **Identity**. Authentication and authorization (Keycloak integration).
 
 ### Technology Stack
@@ -48,7 +49,8 @@ The easiest way to start is using Docker Compose, which handles all services and
 docker compose up
 ```
 
-- **Web Client**: [localhost:5173](http://localhost:5173)
+- **Web Portal**: [localhost:5173](http://localhost:5173)
+- **Game Client**: [localhost:5174](http://localhost:5174)
 - **Cashier API**: [localhost:3000](http://localhost:3000)
 - **Game Server**: [localhost:2567](http://localhost:2567)
 - **Identity (Keycloak)**: [localhost:8080](http://localhost:8080)
