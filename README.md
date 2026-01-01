@@ -16,6 +16,7 @@ The project is structured as a **Yarn Workspaces Monorepo**. This allows us to s
 ### Technology Stack
 - **Language**: TypeScript (v5.x)
 - **Package Manager**: Yarn (Berry/v3+)
+- **Styling**: CSS Modules (Scoped styling)
 - **Linting & Formatting**: [Biome](https://biomejs.dev/) (Ultra-fast, unified tool)
 - **Testing**: [Vitest](https://vitest.dev/) (Strict TDD approach)
 - **Containerization**: Docker & Docker Compose

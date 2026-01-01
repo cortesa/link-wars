@@ -1,4 +1,5 @@
-import './index.css'
+import styles from './App.module.css';
+import './index.css';
 
 function App() {
   const games = {
@@ -12,48 +13,49 @@ function App() {
   const activeGame = games.current;
 
   return (
-    <div className="app-layout">
-      <header className="main-header">
-        <div className="logo">LINK WARS</div>
-        <nav>
-          <a href="#" className="nav-item">Play</a>
-          <a href="#" className="nav-item">Leaderboard</a>
-          <a href="#" className="nav-item">About</a>
-          <button className="login-btn">Login</button>
-        </nav>
-      </header>
-      
-      <div className="main-content-grid">
-        <aside className="ad-column left">
-          <div className="ad-placeholder">Advertisement</div>
-          <div className="ad-placeholder">Advertisement</div>
+    <div className={styles.appLayout}>
+        <header className={styles.mainHeader}>
+          <div className={styles.logo}>LINK WARS</div>
+          <nav className={styles.nav}>
+            <a href="#" className={styles.navItem}>Play</a>
+            <a href="#" className={styles.navItem}>Leaderboard</a>
+            <a href="#" className={styles.navItem}>About</a>
+            <button className={styles.loginBtn}>Login</button>
+          </nav>
+        </header>
+      <div className={styles.content}>
+
+        <div className={styles.bannerSection}>
+           <div className={styles.adBannerPlaceholder}>Banner Ad</div>
+        </div>
+        
+        <aside className={`${styles.adColumn} ${styles.left}`}>
+          <div className={`${styles.adPlaceholder} ${styles.adTop}`}>Advertisement</div>
+          <div className={`${styles.adPlaceholder} ${styles.adBottom}`}>Advertisement</div>
         </aside>
         
-        <main className="game-wrapper">
-          <div className="iframe-container">
+        <main className={styles.gameWrapper}>
+          <div className={styles.iframeContainer}>
             <iframe 
               src={activeGame.url} 
               title={activeGame.title}
-              className="game-iframe"
+              className={styles.gameIframe}
               allow="autoplay; fullscreen; microphone; camera; midi; encrypted-media"
             />
           </div>
-          <div className="game-info">
+          <div className={styles.gameInfo}>
             <h1>{activeGame.title}</h1>
             <p>{activeGame.description}</p>
           </div>
         </main>
         
-        <aside className="ad-column right">
-          <div className="ad-placeholder">Advertisement</div>
-          <div className="ad-placeholder">Advertisement</div>
+        <aside className={`${styles.adColumn} ${styles.right}`}>
+          <div className={`${styles.adPlaceholder} ${styles.adTop}`}>Advertisement</div>
+          <div className={`${styles.adPlaceholder} ${styles.adBottom}`}>Advertisement</div>
         </aside>
       </div>
 
-      <div className="bottom-content">
-         <div className="ad-banner-placeholder">Banner Ad</div>
       </div>
-    </div>
   )
 }
 
