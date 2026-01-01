@@ -71,4 +71,4 @@ We follow a **Strict TDD (Test-Driven Development)** methodology. All code must 
 ---
 
 > [!NOTE]
-> For a more detailed breakdown of commands and advanced configuration, please refer to the **[DEVELOPMENT_GUIDE.md](.gemini/antigravity/brain/465b3049-e307-41c1-b2c8-ffa51cf4a0d9/DEVELOPMENT_GUIDE.md)**.
+> For a more detailed breakdown of commands and advanced configuration, please refer to the **[development-guide.md](Docs/development-guide.md)**.
