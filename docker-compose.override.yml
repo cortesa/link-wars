@@ -1,11 +1,11 @@
 services:
   identity:
     build:
-      context: ./services/identity
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: services/identity/Dockerfile
+      target: development
     volumes:
-      - ./services/identity:/app
-      - /app/node_modules
+      - ./services/identity:/app/services/identity
     ports:
       - "8080:8080"
     environment:
@@ -13,23 +13,23 @@ services:
 
   cashier:
     build:
-      context: ./services/cashier
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: services/cashier/Dockerfile
+      target: development
     volumes:
-      - ./services/cashier:/app
-      - /app/node_modules
+      - ./services/cashier:/app/services/cashier
     ports:
-      - "3001:3001"
+      - "3000:3000"
     environment:
       - NODE_ENV=development
 
   game-server:
     build:
-      context: ./services/game-server
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: services/game-server/Dockerfile
+      target: development
     volumes:
-      - ./services/game-server:/app
-      - /app/node_modules
+      - ./services/game-server:/app/services/game-server
     ports:
       - "2567:2567"
     environment:
@@ -37,11 +37,11 @@ services:
 
   client-web:
     build:
-      context: ./services/client-web
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: services/client-web/Dockerfile
+      target: development
     volumes:
-      - ./services/client-web:/app
-      - /app/node_modules
+      - ./services/client-web:/app/services/client-web
     ports:
       - "5173:5173"
     environment:

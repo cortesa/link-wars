@@ -1,9 +1,8 @@
 {
-  "editor.formatOnSave": true,
-  "editor.defaultFormatter": "biomejs.biome",
-  "editor.codeActionsOnSave": {
-    "source.organizeImports.biome": "explicit",
-    "source.fixAll.biome": "explicit"
-  },
-  "biome.enabled": true
+  // "workbench.colorCustomizations": {
+  //   "titleBar.activeBackground": "#6b7280",
+  //   "titleBar.activeForeground": "#ffffff",
+  //   "activityBar.background": "#6b7280",
+  //   "statusBar.background": "#6b7280"
+  // }
 }

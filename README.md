@@ -48,9 +48,10 @@ The easiest way to start is using Docker Compose, which handles all services and
 docker compose up
 ```
 
+- **Web Client**: [localhost:5173](http://localhost:5173)
 - **Cashier API**: [localhost:3000](http://localhost:3000)
 - **Game Server**: [localhost:2567](http://localhost:2567)
-- **Web Client**: [localhost:5173](http://localhost:5173)
+- **Identity (Keycloak)**: [localhost:8080](http://localhost:8080)
 
 ---
 

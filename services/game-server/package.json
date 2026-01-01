@@ -8,6 +8,7 @@
     "test:watch": "vitest"
   },
   "dependencies": {
+    "@colyseus/core": "^0.16.24",
     "@colyseus/schema": "^3.0.76",
     "colyseus": "^0.16.5",
     "express": "^5.2.1"

@@ -23,9 +23,10 @@ docker compose up
 docker compose up --build
 ```
 
+- **Web Client**: http://localhost:5173
 - **Cashier API**: http://localhost:3000
 - **Game Server**: http://localhost:2567
-- **Web Client**: http://localhost:5173
+- **Identity (Keycloak)**: http://localhost:8080
 
 ## 3. Daily Development Workflow
 

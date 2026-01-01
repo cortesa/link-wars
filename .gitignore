@@ -38,3 +38,5 @@ yarn-error.log*
 logs/
 *.log
 !**/.agent/rules/project-rules.md
+!*.code-workspace
+!*.code-workspace
