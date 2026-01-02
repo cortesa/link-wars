@@ -17,10 +17,6 @@ function Lobby() {
 
   return (
     <div className={styles.lobbyContent}>
-      <div className={styles.bannerSection}>
-        <div className={styles.adBannerPlaceholder}>Banner Ad</div>
-      </div>
-
       <div className={styles.gameWrapper}>
         <div className={styles.iframeContainer}>
           <iframe

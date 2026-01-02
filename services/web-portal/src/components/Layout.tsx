@@ -16,29 +16,26 @@ function Layout() {
     <div className={styles.layout}>
       {/* Mobile Menu Overlay */}
       {isMenuOpen && (
-        <button
-          type="button"
-          className={`${styles.menuOverlay} ${styles.menuOpen}`}
-          onClick={toggleMenu}
-          onKeyDown={e => e.key === 'Escape' && toggleMenu()}
-        >
-          <div
-            role="dialog"
-            aria-modal="true"
-            className={styles.menuContent}
-            onClick={e => e.stopPropagation()}
-            onKeyDown={e => e.stopPropagation()}
-          >
+        <div className={styles.menuOverlay}>
+          <button
+            type="button"
+            className={styles.menuBackdrop}
+            onClick={toggleMenu}
+            aria-label="Close menu"
+          />
+          <div role="dialog" aria-modal="true" className={styles.menuContent}>
             <button type="button" className={styles.closeMenuBtn} onClick={toggleMenu}>×</button>
             <nav className={styles.menuNav}>
-              {isGamePage && (
-                <button type="button" onClick={goToLobby} className={styles.menuLink}>Exit Game</button>
-              )}
-              <button type="button" className={styles.menuLink}>Leaderboard</button>
-              <button type="button" className={styles.menuLink}>About</button>
+              <ul className={styles.menuList}>
+                {isGamePage && (
+                  <li><button type="button" onClick={goToLobby} className={styles.menuLink}>Exit Game</button></li>
+                )}
+                <li><button type="button" className={styles.menuLink}>Leaderboard</button></li>
+                <li><button type="button" className={styles.menuLink}>About</button></li>
+              </ul>
             </nav>
           </div>
-        </button>
+        </div>
       )}
 
       <Header

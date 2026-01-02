@@ -21,17 +21,6 @@ describe('Lobby - Content', () => {
     global.innerHeight = 667;
   });
 
-  it('should render banner ad at the top', () => {
-    render(
-      <BrowserRouter>
-        <Lobby />
-      </BrowserRouter>
-    );
-
-    const banner = screen.getByText('Banner Ad');
-    expect(banner).toBeInTheDocument();
-  });
-
   it('should render game thumbnail', () => {
     render(
       <BrowserRouter>
@@ -82,7 +71,7 @@ describe('Lobby - Content', () => {
     expect(mockNavigate).toHaveBeenCalledWith('/game/tower-wars');
   });
 
-  it('should have correct layout structure (banner → game wrapper)', () => {
+  it('should have correct layout structure (game wrapper only)', () => {
     const { container } = render(
       <BrowserRouter>
         <Lobby />
@@ -92,10 +81,8 @@ describe('Lobby - Content', () => {
     const content = container.querySelector('[class*="lobbyContent"]');
     expect(content).toBeInTheDocument();
 
-    // Check order: banner first, then game wrapper
     const children = content?.children;
-    expect(children?.[0]?.className).toContain('bannerSection');
-    expect(children?.[1]?.className).toContain('gameWrapper');
+    expect(children?.[0]?.className).toContain('gameWrapper');
   });
 
   it('should not load game iframe initially', () => {

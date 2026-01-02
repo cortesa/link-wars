@@ -123,22 +123,21 @@ describe('Layout Component', () => {
   });
 
   describe('Menu Overlay', () => {
-    it('should render menu overlay (initially hidden)', () => {
+    it('should not render menu overlay when closed', () => {
       const { container } = renderLayout();
 
       const menuOverlay = container.querySelector('[class*="menuOverlay"]');
-      expect(menuOverlay).toBeInTheDocument();
-      expect(menuOverlay?.className).not.toContain('menuOpen');
+      expect(menuOverlay).not.toBeInTheDocument();
     });
 
-    it('should toggle menu when menu button is clicked', () => {
+    it('should render menu overlay when opened', () => {
       const { container } = renderLayout();
 
       const menuButton = screen.getByTestId('menu-toggle');
       fireEvent.click(menuButton);
 
       const menuOverlay = container.querySelector('[class*="menuOverlay"]');
-      expect(menuOverlay?.className).toContain('menuOpen');
+      expect(menuOverlay).toBeInTheDocument();
     });
 
     it('should show Exit Game in menu on game pages', () => {

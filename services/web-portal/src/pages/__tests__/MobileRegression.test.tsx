@@ -58,10 +58,8 @@ describe('Mobile Regression Tests', () => {
       const content = container.querySelector('[class*="lobbyContent"]');
       const children = Array.from(content?.children || []);
 
-      // Banner first
-      expect(children[0]?.className).toContain('bannerSection');
-      // Game wrapper second (contains iframe and game info)
-      expect(children[1]?.className).toContain('gameWrapper');
+      // Game wrapper is the only child (banner is in Layout)
+      expect(children[0]?.className).toContain('gameWrapper');
     });
 
     it('GamePage should render game content on mobile', () => {
@@ -106,15 +104,6 @@ describe('Mobile Regression Tests', () => {
       expect(sidebars.length).toBe(0);
     });
 
-    it('should show banner ad in Lobby', () => {
-      render(
-        <MemoryRouter initialEntries={['/']}>
-          <Lobby />
-        </MemoryRouter>
-      );
-
-      expect(screen.getByText('Banner Ad')).toBeInTheDocument();
-    });
   });
 
   describe('Mobile Game Display', () => {
