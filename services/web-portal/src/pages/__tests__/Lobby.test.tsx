@@ -13,16 +13,7 @@ vi.mock('react-router-dom', async () => {
   };
 });
 
-// Mock Header component
-vi.mock('../../components/Header', () => ({
-  default: ({ onMenuToggle }: { onMenuToggle: () => void }) => (
-    <header data-testid="header">
-      <button onClick={onMenuToggle}>Menu</button>
-    </header>
-  ),
-}));
-
-describe('Lobby - Mobile Layout', () => {
+describe('Lobby - Content', () => {
   beforeEach(() => {
     vi.clearAllMocks();
     // Set mobile viewport
@@ -62,7 +53,7 @@ describe('Lobby - Mobile Layout', () => {
 
     const title = screen.getByRole('heading', { name: /Tower Wars/i });
     const description = screen.getByText(/Strategy meets chaos/i);
-    
+
     expect(title).toBeInTheDocument();
     expect(description).toBeInTheDocument();
   });
@@ -91,34 +82,20 @@ describe('Lobby - Mobile Layout', () => {
     expect(mockNavigate).toHaveBeenCalledWith('/game/tower-wars');
   });
 
-  it('should have correct layout structure (banner → iframe → game info)', () => {
+  it('should have correct layout structure (banner → game wrapper)', () => {
     const { container } = render(
       <BrowserRouter>
         <Lobby />
       </BrowserRouter>
     );
 
-    const content = container.querySelector('[class*="content"]');
+    const content = container.querySelector('[class*="lobbyContent"]');
     expect(content).toBeInTheDocument();
 
-    // Check order: banner first, then game wrapper with iframe and info
+    // Check order: banner first, then game wrapper
     const children = content?.children;
     expect(children?.[0]?.className).toContain('bannerSection');
-    expect(children?.[1]?.tagName).toBe('MAIN');
-  });
-
-  it('should open menu overlay when hamburger is clicked', () => {
-    render(
-      <BrowserRouter>
-        <Lobby />
-      </BrowserRouter>
-    );
-
-    const menuButton = screen.getByText('Menu');
-    fireEvent.click(menuButton);
-
-    const overlay = screen.getByText('Leaderboard');
-    expect(overlay).toBeInTheDocument();
+    expect(children?.[1]?.className).toContain('gameWrapper');
   });
 
   it('should not load game iframe initially', () => {
@@ -130,9 +107,20 @@ describe('Lobby - Mobile Layout', () => {
 
     const gameIframes = screen.queryAllByTitle('Tower Wars');
     const thumbnailIframe = screen.getByTitle(/Tower Wars - Thumbnail/i);
-    
+
     // Should only have thumbnail iframe, not game iframe
     expect(thumbnailIframe).toBeInTheDocument();
     expect(gameIframes.length).toBe(0);
+  });
+
+  it('should render with lobbyContent class', () => {
+    const { container } = render(
+      <BrowserRouter>
+        <Lobby />
+      </BrowserRouter>
+    );
+
+    const content = container.querySelector('[class*="lobbyContent"]');
+    expect(content).toBeInTheDocument();
   });
 });

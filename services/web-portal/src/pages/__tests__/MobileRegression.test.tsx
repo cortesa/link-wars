@@ -13,20 +13,6 @@ vi.mock('react-router-dom', async () => {
   };
 });
 
-vi.mock('../../components/Header', () => ({
-  default: ({ onMenuToggle, onLogoClick, showExitGame, onExitGame }: any) => (
-    <header data-testid="header">
-      <button onClick={onMenuToggle}>Menu</button>
-      {showExitGame ? (
-        <button onClick={onExitGame}>Exit Game</button>
-      ) : (
-        <button>Play</button>
-      )}
-      {onLogoClick && <button onClick={onLogoClick}>Logo</button>}
-    </header>
-  ),
-}));
-
 describe('Mobile Regression Tests', () => {
   let originalInnerWidth: number;
   let originalInnerHeight: number;
@@ -35,7 +21,7 @@ describe('Mobile Regression Tests', () => {
     vi.clearAllMocks();
     originalInnerWidth = global.innerWidth;
     originalInnerHeight = global.innerHeight;
-    
+
     // Set mobile viewport (iPhone SE)
     global.innerWidth = 375;
     global.innerHeight = 667;
@@ -59,21 +45,6 @@ describe('Mobile Regression Tests', () => {
 
       expect(mockNavigate).toHaveBeenCalledWith('/game/tower-wars');
     });
-
-    it('should navigate back to Lobby from GamePage', () => {
-      render(
-        <MemoryRouter initialEntries={['/game/tower-wars']}>
-          <Routes>
-            <Route path="/game/:gameSlug" element={<GamePage />} />
-          </Routes>
-        </MemoryRouter>
-      );
-
-      const exitButtons = screen.getAllByText('Exit Game');
-      fireEvent.click(exitButtons[0]);
-
-      expect(mockNavigate).toHaveBeenCalledWith('/');
-    });
   });
 
   describe('Mobile Layout Consistency', () => {
@@ -84,16 +55,16 @@ describe('Mobile Regression Tests', () => {
         </MemoryRouter>
       );
 
-      const content = container.querySelector('[class*="content"]');
+      const content = container.querySelector('[class*="lobbyContent"]');
       const children = Array.from(content?.children || []);
 
       // Banner first
       expect(children[0]?.className).toContain('bannerSection');
       // Game wrapper second (contains iframe and game info)
-      expect(children[1]?.tagName).toBe('MAIN');
+      expect(children[1]?.className).toContain('gameWrapper');
     });
 
-    it('GamePage should maintain correct element order on mobile', () => {
+    it('GamePage should render game content on mobile', () => {
       const { container } = render(
         <MemoryRouter initialEntries={['/game/tower-wars']}>
           <Routes>
@@ -102,18 +73,11 @@ describe('Mobile Regression Tests', () => {
         </MemoryRouter>
       );
 
-      const layout = container.querySelector('[class*="gamePageLayout"]');
-      const children = Array.from(layout?.children || []);
+      const gameContent = container.querySelector('[class*="gameContent"]');
+      expect(gameContent).toBeInTheDocument();
 
-      // Skip menu overlay (hidden), check visible structure
-      const visibleElements = children.filter(
-        (el) => !el.className.includes('menuOverlay')
-      );
-
-      // Header → Content (iframe) → Banner
-      expect(visibleElements[0]?.getAttribute('data-testid')).toBe('header');
-      expect(visibleElements[1]?.className).toContain('gamePageContent');
-      expect(visibleElements[2]?.className).toContain('gamePageBanner');
+      const iframe = gameContent?.querySelector('iframe');
+      expect(iframe).toBeInTheDocument();
     });
   });
 
@@ -142,21 +106,10 @@ describe('Mobile Regression Tests', () => {
       expect(sidebars.length).toBe(0);
     });
 
-    it('should show banner ad on both pages', () => {
-      const { unmount } = render(
+    it('should show banner ad in Lobby', () => {
+      render(
         <MemoryRouter initialEntries={['/']}>
           <Lobby />
-        </MemoryRouter>
-      );
-
-      expect(screen.getByText('Banner Ad')).toBeInTheDocument();
-      unmount();
-
-      render(
-        <MemoryRouter initialEntries={['/game/tower-wars']}>
-          <Routes>
-            <Route path="/game/:gameSlug" element={<GamePage />} />
-          </Routes>
         </MemoryRouter>
       );
 
@@ -207,7 +160,7 @@ describe('Mobile Regression Tests', () => {
         </MemoryRouter>
       );
 
-      expect(container.querySelector('[class*="appLayout"]')).toBeInTheDocument();
+      expect(container.querySelector('[class*="lobbyContent"]')).toBeInTheDocument();
     });
 
     it('should handle landscape orientation (667x375)', () => {
@@ -220,7 +173,7 @@ describe('Mobile Regression Tests', () => {
         </MemoryRouter>
       );
 
-      expect(container.querySelector('[class*="appLayout"]')).toBeInTheDocument();
+      expect(container.querySelector('[class*="lobbyContent"]')).toBeInTheDocument();
     });
 
     it('should handle different mobile screen sizes', () => {

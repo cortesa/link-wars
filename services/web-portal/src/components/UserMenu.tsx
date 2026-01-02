@@ -1,11 +1,7 @@
 import { useState } from 'react';
 import styles from './UserMenu.module.css';
 
-interface UserMenuProps {
-  isGameMode?: boolean;
-}
-
-function UserMenu({ isGameMode = false }: UserMenuProps) {
+function UserMenu() {
   const [isAuthenticated] = useState(false); // TODO: Connect to auth context
 
   if (!isAuthenticated) {

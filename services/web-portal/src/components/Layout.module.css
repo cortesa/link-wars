@@ -1,0 +1,116 @@
+.layout {
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  height: 100dvh;
+  overflow: hidden;
+}
+
+.mainContainer {
+  overflow-y: auto;
+  min-height: 0;
+}
+
+/* Ad Banner Footer */
+.adBanner {
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--bg-color);
+  border-top: 1px solid var(--border-color);
+}
+
+.adBannerPlaceholder {
+  background-color: var(--ad-bg);
+  border: 1px dashed var(--border-color);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #444;
+  font-size: 0.9rem;
+  width: calc(100% - 1rem);
+  height: calc(100% - 0.5rem);
+  max-width: 728px;
+}
+
+/* Menu Overlay */
+.menuOverlay {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 100;
+  border: none;
+  cursor: default;
+  text-align: left;
+}
+
+.menuOverlay.menuOpen {
+  display: block;
+}
+
+.menuContent {
+  background-color: #111;
+  width: 100%;
+  height: 33vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+  padding: 2rem;
+  border-bottom: 1px solid var(--border-color);
+  transform: translateY(-100%);
+  transition: transform 0.3s ease-out;
+  position: relative;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+.menuOverlay.menuOpen .menuContent {
+  transform: translateY(0);
+}
+
+.closeMenuBtn {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  background: none;
+  border: none;
+  color: #888;
+  font-size: 2rem;
+  cursor: pointer;
+  padding: 0.5rem;
+}
+
+.menuNav {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.menuLink {
+  color: #fff;
+  font-size: 1.25rem;
+  font-weight: 500;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.menuLink:hover {
+  color: var(--accent-color);
+}
+
+/* Mobile */
+@media (max-width: 1024px) {
+  .adBanner {
+    height: 60px;
+  }
+
+  .adBannerPlaceholder {
+    border-radius: 4px;
+  }
+}
