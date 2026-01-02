@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { MemoryRouter, Routes, Route } from 'react-router-dom';
 import Lobby from '../Lobby';
 import GamePage from '../GamePage';
 
@@ -49,9 +49,9 @@ describe('Mobile Regression Tests', () => {
   describe('Mobile Navigation Flow', () => {
     it('should navigate from Lobby to GamePage on mobile', () => {
       render(
-        <BrowserRouter>
+        <MemoryRouter initialEntries={['/']}>
           <Lobby />
-        </BrowserRouter>
+        </MemoryRouter>
       );
 
       const playButton = screen.getByRole('button', { name: /Play now/i });
@@ -62,16 +62,15 @@ describe('Mobile Regression Tests', () => {
 
     it('should navigate back to Lobby from GamePage', () => {
       render(
-        <BrowserRouter>
+        <MemoryRouter initialEntries={['/game/tower-wars']}>
           <Routes>
             <Route path="/game/:gameSlug" element={<GamePage />} />
           </Routes>
-        </BrowserRouter>,
-        { initialEntries: ['/game/tower-wars'] } as any
+        </MemoryRouter>
       );
 
-      const exitButton = screen.getByText('Exit Game');
-      fireEvent.click(exitButton);
+      const exitButtons = screen.getAllByText('Exit Game');
+      fireEvent.click(exitButtons[0]);
 
       expect(mockNavigate).toHaveBeenCalledWith('/');
     });
@@ -80,9 +79,9 @@ describe('Mobile Regression Tests', () => {
   describe('Mobile Layout Consistency', () => {
     it('Lobby should maintain correct element order on mobile', () => {
       const { container } = render(
-        <BrowserRouter>
+        <MemoryRouter initialEntries={['/']}>
           <Lobby />
-        </BrowserRouter>
+        </MemoryRouter>
       );
 
       const content = container.querySelector('[class*="content"]');
@@ -96,12 +95,11 @@ describe('Mobile Regression Tests', () => {
 
     it('GamePage should maintain correct element order on mobile', () => {
       const { container } = render(
-        <BrowserRouter>
+        <MemoryRouter initialEntries={['/game/tower-wars']}>
           <Routes>
             <Route path="/game/:gameSlug" element={<GamePage />} />
           </Routes>
-        </BrowserRouter>,
-        { initialEntries: ['/game/tower-wars'] } as any
+        </MemoryRouter>
       );
 
       const layout = container.querySelector('[class*="gamePageLayout"]');
@@ -122,9 +120,9 @@ describe('Mobile Regression Tests', () => {
   describe('Mobile Content Rendering', () => {
     it('should not show sidebars on mobile Lobby', () => {
       const { container } = render(
-        <BrowserRouter>
+        <MemoryRouter initialEntries={['/']}>
           <Lobby />
-        </BrowserRouter>
+        </MemoryRouter>
       );
 
       const sidebars = container.querySelectorAll('[class*="adColumn"]');
@@ -133,12 +131,11 @@ describe('Mobile Regression Tests', () => {
 
     it('should not show sidebars on mobile GamePage', () => {
       const { container } = render(
-        <BrowserRouter>
+        <MemoryRouter initialEntries={['/game/tower-wars']}>
           <Routes>
             <Route path="/game/:gameSlug" element={<GamePage />} />
           </Routes>
-        </BrowserRouter>,
-        { initialEntries: ['/game/tower-wars'] } as any
+        </MemoryRouter>
       );
 
       const sidebars = container.querySelectorAll('[class*="adColumn"]');
@@ -147,21 +144,20 @@ describe('Mobile Regression Tests', () => {
 
     it('should show banner ad on both pages', () => {
       const { unmount } = render(
-        <BrowserRouter>
+        <MemoryRouter initialEntries={['/']}>
           <Lobby />
-        </BrowserRouter>
+        </MemoryRouter>
       );
 
       expect(screen.getByText('Banner Ad')).toBeInTheDocument();
       unmount();
 
       render(
-        <BrowserRouter>
+        <MemoryRouter initialEntries={['/game/tower-wars']}>
           <Routes>
             <Route path="/game/:gameSlug" element={<GamePage />} />
           </Routes>
-        </BrowserRouter>,
-        { initialEntries: ['/game/tower-wars'] } as any
+        </MemoryRouter>
       );
 
       expect(screen.getByText('Banner Ad')).toBeInTheDocument();
@@ -171,9 +167,9 @@ describe('Mobile Regression Tests', () => {
   describe('Mobile Game Display', () => {
     it('should show thumbnail in Lobby, not full game', () => {
       render(
-        <BrowserRouter>
+        <MemoryRouter initialEntries={['/']}>
           <Lobby />
-        </BrowserRouter>
+        </MemoryRouter>
       );
 
       const thumbnail = screen.getByTitle(/Tower Wars - Thumbnail/i);
@@ -187,12 +183,11 @@ describe('Mobile Regression Tests', () => {
 
     it('should show full game iframe in GamePage', () => {
       render(
-        <BrowserRouter>
+        <MemoryRouter initialEntries={['/game/tower-wars']}>
           <Routes>
             <Route path="/game/:gameSlug" element={<GamePage />} />
           </Routes>
-        </BrowserRouter>,
-        { initialEntries: ['/game/tower-wars'] } as any
+        </MemoryRouter>
       );
 
       const gameIframe = screen.getByTitle('Tower Wars');
@@ -207,9 +202,9 @@ describe('Mobile Regression Tests', () => {
       global.innerHeight = 667;
 
       const { container } = render(
-        <BrowserRouter>
+        <MemoryRouter initialEntries={['/']}>
           <Lobby />
-        </BrowserRouter>
+        </MemoryRouter>
       );
 
       expect(container.querySelector('[class*="appLayout"]')).toBeInTheDocument();
@@ -220,9 +215,9 @@ describe('Mobile Regression Tests', () => {
       global.innerHeight = 375;
 
       const { container } = render(
-        <BrowserRouter>
+        <MemoryRouter initialEntries={['/']}>
           <Lobby />
-        </BrowserRouter>
+        </MemoryRouter>
       );
 
       expect(container.querySelector('[class*="appLayout"]')).toBeInTheDocument();
@@ -240,9 +235,9 @@ describe('Mobile Regression Tests', () => {
         global.innerHeight = height;
 
         const { unmount } = render(
-          <BrowserRouter>
+          <MemoryRouter initialEntries={['/']}>
             <Lobby />
-          </BrowserRouter>
+          </MemoryRouter>
         );
 
         expect(screen.getByRole('button', { name: /Play now/i })).toBeInTheDocument();

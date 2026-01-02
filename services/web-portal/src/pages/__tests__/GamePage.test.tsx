@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { MemoryRouter, Routes, Route } from 'react-router-dom';
 import GamePage from '../GamePage';
 
 // Mock useNavigate
@@ -33,12 +33,11 @@ describe('GamePage - Mobile Layout', () => {
 
   const renderGamePage = () => {
     return render(
-      <BrowserRouter>
+      <MemoryRouter initialEntries={['/game/tower-wars']}>
         <Routes>
           <Route path="/game/:gameSlug" element={<GamePage />} />
         </Routes>
-      </BrowserRouter>,
-      { initialEntries: ['/game/tower-wars'] } as any
+      </MemoryRouter>
     );
   };
 
