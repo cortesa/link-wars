@@ -1,14 +1,12 @@
-#!/usr/bin/env sh
-. "$(dirname -- "$0")/_/husky.sh"
-
 # Run tests for all services with test scripts
 echo "🧪 Running tests before push..."
 
 # Array to track failed services
 failed_services=""
 
-# Test each service
-for service in cashier game-server game-client web-portal; do
+# Test only services with actual test files
+# Currently only web-portal has tests implemented
+for service in web-portal; do
   echo "\n📦 Testing $service..."
   if yarn workspace $service test; then
     echo "✅ $service tests passed"
@@ -17,6 +15,9 @@ for service in cashier game-server game-client web-portal; do
     failed_services="$failed_services $service"
   fi
 done
+
+# Note: cashier, game-server, and game-client have test folders but no test files yet
+# They will be added to this hook when tests are implemented
 
 # Check if any service failed
 if [ -n "$failed_services" ]; then
