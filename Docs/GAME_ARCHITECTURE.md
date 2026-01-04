@@ -40,15 +40,20 @@ Reusable service for other games.
 Responsibilities:
 - Balances per player.
 - Operation ledger.
-- Management of:
-  - Tournament Buy-in (one-time).
-  - Refunds.
-  - Payouts to multiple players.
+- Only two operations:
+  - **Withdraw** (debit).
+  - **Deposit** (credit).
 
 Features:
 - **Authoritative** (client does not touch coins).
 - **Idempotent** (`idempotencyKey` per operation).
 - Own DB (Postgres).
+
+Future monetization (post-MVP):
+- MVP does not sell coins and does not take a cut from matches.
+- Economy is zero-sum: all withdrawals are redistributed to players.
+- Revenue later comes from **coin purchases** (packages) in the portal.
+- This keeps game-server and cashier logic neutral while payments evolve separately.
 
 ---
 
@@ -90,10 +95,10 @@ Recommended local services:
 - `client_web` (optional)
 
 ### Connections
-- Client → Keycloak (login)
-- Client → Game Server (WS + JWT)
-- Game Server → Cashier (Internal HTTP)
-- Game Server and Cashier validate JWT against Keycloak
+- Client (portal) → Keycloak (login)
+- Portal → Game Server (Session API)
+- Game Client → Game Server (WS + sessionToken)
+- Game Server → Cashier (Internal HTTP, HMAC signed)
 
 ---
 

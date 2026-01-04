@@ -10,7 +10,25 @@ Managed by Keycloak, referenced by all services.
 
 ---
 
-## 2. Match (Game Server State)
+## 2. GameSession (Portal ↔ Game Server)
+Session data created by the portal and consumed by the game-server.
+- `sessionToken`: String (UUID, passed to game-client).
+- `playerId`: UUID (Keycloak `sub`).
+- `playerName`: String.
+- `gameId`: String.
+- `roomId`: String | null.
+- `cashier`:
+  - `endpoint`: String.
+  - `serviceId`: String.
+  - `signingSecret`: String.
+  - `playerId`: UUID (Cashier player ID).
+- `createdAt`: Unix timestamp (ms).
+- `expiresAt`: Unix timestamp (ms).
+- `status`: enum (`active`, `expired`, `ended`).
+
+---
+
+## 3. Match (Game Server State)
 The real-time representation of a single game.
 - `matchId`: Unique string.
 - `mode`: enum (`1V1`, `FFA`, `TOURNAMENT`).
@@ -20,18 +38,19 @@ The real-time representation of a single game.
 
 ---
 
-## 3. Transaction (Cashier Ledger)
+## 4. Transaction (Cashier Ledger)
 The financial record of any balance change.
 - `txId`: UUID.
 - `playerId`: UUID.
-- `amount`: Decimal (Positive for credit, Negative for debit).
-- `type`: enum (`BUY_IN`, `PAYOUT`, `REFUND`, `INITIAL_BONUS`).
+- `amount`: Decimal (always positive).
+- `direction`: enum (`DEBIT`, `CREDIT`).
+- `reference`: String (e.g., `buy-in:room-123`, `payout:room-123:1st`).
 - `idempotencyKey`: Unique string provided by the caller.
 - `timestamp`: UTC DateTime.
 
 ---
 
-## 4. Tournament (Management)
+## 5. Tournament (Management)
 The bracket-level entity.
 - `tournamentId`: UUID.
 - `entryFee`: Decimal.
