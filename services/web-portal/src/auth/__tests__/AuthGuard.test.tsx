@@ -1,23 +1,23 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { render, screen } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
-import { MemoryRouter } from 'react-router-dom';
-import AuthGuard from '../AuthGuard';
+import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
+import { MemoryRouter } from "react-router-dom";
+import { beforeEach, describe, expect, it, vi } from "vitest";
+import AuthGuard from "../AuthGuard";
 
 // Mock useAuth hook
 const mockLogin = vi.fn();
 const mockUseAuth = vi.fn();
 
-vi.mock('../AuthContext', () => ({
+vi.mock("../AuthContext", () => ({
   useAuth: () => mockUseAuth(),
 }));
 
-describe('AuthGuard', () => {
+describe("AuthGuard", () => {
   beforeEach(() => {
     vi.clearAllMocks();
   });
 
-  it('should render children when authenticated', () => {
+  it("should render children when authenticated", () => {
     mockUseAuth.mockReturnValue({
       isAuthenticated: true,
       isLoading: false,
@@ -29,13 +29,13 @@ describe('AuthGuard', () => {
         <AuthGuard>
           <div>Protected Content</div>
         </AuthGuard>
-      </MemoryRouter>
+      </MemoryRouter>,
     );
 
-    expect(screen.getByText('Protected Content')).toBeInTheDocument();
+    expect(screen.getByText("Protected Content")).toBeInTheDocument();
   });
 
-  it('should show loading state while auth is initializing', () => {
+  it("should show loading state while auth is initializing", () => {
     mockUseAuth.mockReturnValue({
       isAuthenticated: false,
       isLoading: true,
@@ -47,14 +47,14 @@ describe('AuthGuard', () => {
         <AuthGuard>
           <div>Protected Content</div>
         </AuthGuard>
-      </MemoryRouter>
+      </MemoryRouter>,
     );
 
     expect(screen.getByText(/loading/i)).toBeInTheDocument();
-    expect(screen.queryByText('Protected Content')).not.toBeInTheDocument();
+    expect(screen.queryByText("Protected Content")).not.toBeInTheDocument();
   });
 
-  it('should show login modal when not authenticated', () => {
+  it("should show login modal when not authenticated", () => {
     mockUseAuth.mockReturnValue({
       isAuthenticated: false,
       isLoading: false,
@@ -66,14 +66,14 @@ describe('AuthGuard', () => {
         <AuthGuard>
           <div>Protected Content</div>
         </AuthGuard>
-      </MemoryRouter>
+      </MemoryRouter>,
     );
 
     expect(screen.getByText(/login required/i)).toBeInTheDocument();
-    expect(screen.queryByText('Protected Content')).not.toBeInTheDocument();
+    expect(screen.queryByText("Protected Content")).not.toBeInTheDocument();
   });
 
-  it('should call login when modal login button is clicked', async () => {
+  it("should call login when modal login button is clicked", async () => {
     mockUseAuth.mockReturnValue({
       isAuthenticated: false,
       isLoading: false,
@@ -87,10 +87,10 @@ describe('AuthGuard', () => {
         <AuthGuard>
           <div>Protected Content</div>
         </AuthGuard>
-      </MemoryRouter>
+      </MemoryRouter>,
     );
 
-    await user.click(screen.getByRole('button', { name: /login/i }));
+    await user.click(screen.getByRole("button", { name: /login/i }));
 
     expect(mockLogin).toHaveBeenCalled();
   });

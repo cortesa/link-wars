@@ -1,8 +1,8 @@
-import Phaser from 'phaser';
+import Phaser from "phaser";
 
 export class BootScene extends Phaser.Scene {
   constructor() {
-    super({ key: 'BootScene' });
+    super({ key: "BootScene" });
   }
 
   preload() {
@@ -10,9 +10,9 @@ export class BootScene extends Phaser.Scene {
     const width = this.cameras.main.width;
     const height = this.cameras.main.height;
 
-    const loadingText = this.add.text(width / 2, height / 2, 'Loading...', {
-      fontSize: '32px',
-      color: '#ffffff',
+    const loadingText = this.add.text(width / 2, height / 2, "Loading...", {
+      fontSize: "32px",
+      color: "#ffffff",
     });
     loadingText.setOrigin(0.5);
 
@@ -22,8 +22,8 @@ export class BootScene extends Phaser.Scene {
   }
 
   create() {
-    console.log('BootScene: Assets loaded');
+    console.log("BootScene: Assets loaded");
     // Transition to menu scene
-    this.scene.start('MenuScene');
+    this.scene.start("MenuScene");
   }
 }

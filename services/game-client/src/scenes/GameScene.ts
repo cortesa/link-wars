@@ -1,8 +1,8 @@
-import Phaser from 'phaser';
+import Phaser from "phaser";
 
 export class GameScene extends Phaser.Scene {
   constructor() {
-    super({ key: 'GameScene' });
+    super({ key: "GameScene" });
   }
 
   create() {
@@ -13,9 +13,9 @@ export class GameScene extends Phaser.Scene {
     this.add.rectangle(0, 0, width, height, 0x1a1a2e).setOrigin(0);
 
     // Title
-    const title = this.add.text(width / 2, 50, 'GAME SCENE', {
-      fontSize: '32px',
-      color: '#ffffff',
+    const title = this.add.text(width / 2, 50, "GAME SCENE", {
+      fontSize: "32px",
+      color: "#ffffff",
     });
     title.setOrigin(0.5);
 
@@ -25,7 +25,7 @@ export class GameScene extends Phaser.Scene {
       height / 2,
       800,
       500,
-      0x16213e
+      0x16213e,
     );
     gameArea.setStrokeStyle(2, 0x0f3460);
 
@@ -33,35 +33,35 @@ export class GameScene extends Phaser.Scene {
     const infoText = this.add.text(
       width / 2,
       height / 2,
-      'Game logic will be implemented here\n\nTowers, Links, and Units coming soon...',
+      "Game logic will be implemented here\n\nTowers, Links, and Units coming soon...",
       {
-        fontSize: '20px',
-        color: '#cccccc',
-        align: 'center',
-      }
+        fontSize: "20px",
+        color: "#cccccc",
+        align: "center",
+      },
     );
     infoText.setOrigin(0.5);
 
     // Back button
-    const backButton = this.add.text(50, 50, '← Back to Menu', {
-      fontSize: '20px',
-      color: '#00ff00',
+    const backButton = this.add.text(50, 50, "← Back to Menu", {
+      fontSize: "20px",
+      color: "#00ff00",
     });
     backButton.setInteractive({ useHandCursor: true });
 
-    backButton.on('pointerover', () => {
-      backButton.setStyle({ color: '#ffffff' });
+    backButton.on("pointerover", () => {
+      backButton.setStyle({ color: "#ffffff" });
     });
 
-    backButton.on('pointerout', () => {
-      backButton.setStyle({ color: '#00ff00' });
+    backButton.on("pointerout", () => {
+      backButton.setStyle({ color: "#00ff00" });
     });
 
-    backButton.on('pointerdown', () => {
-      this.scene.start('MenuScene');
+    backButton.on("pointerdown", () => {
+      this.scene.start("MenuScene");
     });
 
-    console.log('GameScene: Ready for implementation');
+    console.log("GameScene: Ready for implementation");
   }
 
   update() {

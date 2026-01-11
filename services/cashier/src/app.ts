@@ -1,4 +1,4 @@
-import Fastify from 'fastify';
+import Fastify from "fastify";
 
 const PORT = Number(process.env.PORT) || 3000;
 
@@ -7,24 +7,24 @@ const app = Fastify({
 });
 
 // Health check endpoint
-app.get('/health', async () => {
+app.get("/health", async () => {
   return {
-    status: 'ok',
-    service: 'cashier',
+    status: "ok",
+    service: "cashier",
     timestamp: new Date().toISOString(),
   };
 });
 
 // Root endpoint with welcome message
-app.get('/', async () => {
+app.get("/", async () => {
   return {
-    service: 'Cashier API',
-    version: '1.0.0',
-    status: 'running',
-    description: 'Economy and wallet service for Link Wars',
+    service: "Cashier API",
+    version: "1.0.0",
+    status: "running",
+    description: "Economy and wallet service for Link Wars",
     endpoints: {
-      health: '/health',
-      docs: '/docs (coming soon)',
+      health: "/health",
+      docs: "/docs (coming soon)",
     },
   };
 });
@@ -32,7 +32,7 @@ app.get('/', async () => {
 // Start server
 const start = async () => {
   try {
-    await app.listen({ port: PORT, host: '0.0.0.0' });
+    await app.listen({ port: PORT, host: "0.0.0.0" });
     console.log(`🚀 Cashier API is running on http://0.0.0.0:${PORT}`);
   } catch (err) {
     app.log.error(err);

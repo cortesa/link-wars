@@ -95,14 +95,8 @@
       "enabled": true,
       "alwaysDisplayInConsole": false,
       "clientAuthenticatorType": "client-secret",
-      "redirectUris": [
-        "http://localhost:5173/*",
-        "https://linkwars.com/*"
-      ],
-      "webOrigins": [
-        "http://localhost:5173",
-        "https://linkwars.com"
-      ],
+      "redirectUris": ["http://localhost:5173/*", "https://linkwars.com/*"],
+      "webOrigins": ["http://localhost:5173", "https://linkwars.com"],
       "notBefore": 0,
       "bearerOnly": false,
       "consentRequired": false,

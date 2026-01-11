@@ -1,7 +1,7 @@
-import { ReactNode } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
-import { useAuth } from './AuthContext';
-import LoginModal from './LoginModal';
+import type { ReactNode } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+import { useAuth } from "./AuthContext";
+import LoginModal from "./LoginModal";
 
 interface AuthGuardProps {
   children: ReactNode;
@@ -17,12 +17,19 @@ export default function AuthGuard({ children }: AuthGuardProps) {
   };
 
   const handleClose = () => {
-    navigate('/');
+    navigate("/");
   };
 
   if (isLoading) {
     return (
-      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '50vh' }}>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "50vh",
+        }}
+      >
         <p>Loading...</p>
       </div>
     );

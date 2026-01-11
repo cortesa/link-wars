@@ -1,4 +1,4 @@
-import styles from './LoginModal.module.css';
+import styles from "./LoginModal.module.css";
 
 interface LoginModalProps {
   onLogin: () => void;
