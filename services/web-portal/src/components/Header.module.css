@@ -19,6 +19,9 @@
   -webkit-text-fill-color: transparent;
   border: none;
   cursor: pointer;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
 }
 
 .nav {
@@ -52,17 +55,28 @@
 }
 
 /* Desktop: hide hamburger, show nav */
-.mobileOnly { display: none; }
-.desktopOnly { display: flex; }
+.mobileOnly {
+  display: none;
+}
+.desktopOnly {
+  display: flex;
+}
 
-/* Mobile: show hamburger, hide nav, center logo */
+/* Mobile: show hamburger, hide nav */
 @media (max-width: 1024px) {
-  .mobileOnly { display: flex; }
-  .desktopOnly { display: none; }
+  .mainHeader {
+    padding: 0 0.5rem;
+  }
+
+  .mobileOnly {
+    display: flex;
+  }
+
+  .desktopOnly {
+    display: none;
+  }
 
   .logo {
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
+    font-size: 1.5rem;
   }
 }

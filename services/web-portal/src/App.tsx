@@ -1,10 +1,10 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { AuthGuard, AuthProvider } from './auth';
-import Layout from './components/Layout';
-import Callback from './pages/Callback';
-import GamePage from './pages/GamePage';
-import Lobby from './pages/Lobby';
-import './index.css';
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { AuthGuard, AuthProvider } from "./auth";
+import Layout from "./components/Layout";
+import Callback from "./pages/Callback";
+import GamePage from "./pages/GamePage";
+import Lobby from "./pages/Lobby";
+import "./index.css";
 
 function App() {
   return (
@@ -26,7 +26,7 @@ function App() {
         </Routes>
       </BrowserRouter>
     </AuthProvider>
-  )
+  );
 }
 
-export default App
+export default App;

@@ -1,9 +1,9 @@
-import { defineConfig } from 'vite';
-import { resolve } from 'path';
+import { resolve } from "node:path";
+import { defineConfig } from "vite";
 
 export default defineConfig({
   server: {
-    host: '0.0.0.0',
+    host: "0.0.0.0",
     port: 5174,
     strictPort: true,
     watch: {
@@ -11,17 +11,17 @@ export default defineConfig({
     },
   },
   build: {
-    target: 'esnext',
+    target: "esnext",
     sourcemap: true,
     rollupOptions: {
       input: {
-        main: resolve(__dirname, 'index.html'),
-        game: resolve(__dirname, 'game.html'),
-        thumbnail: resolve(__dirname, 'thumbnail.html'),
+        main: resolve(__dirname, "index.html"),
+        game: resolve(__dirname, "game.html"),
+        thumbnail: resolve(__dirname, "thumbnail.html"),
       },
     },
   },
   optimizeDeps: {
-    include: ['phaser'],
+    include: ["phaser"],
   },
 });

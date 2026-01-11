@@ -6,11 +6,11 @@
     "lib": ["ES2020", "DOM", "DOM.Iterable"],
     "moduleResolution": "bundler",
     "resolveJsonModule": true,
-    
+
     // Vite compatibility
     "allowImportingTsExtensions": true,
     "noEmit": true,
-    
+
     // Other Outputs
     "sourceMap": true,
 
@@ -25,7 +25,7 @@
     "noUncheckedSideEffectImports": true,
     "moduleDetection": "force",
     "skipLibCheck": true,
-    
+
     // Allow synthetic default imports for Phaser
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true

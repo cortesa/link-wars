@@ -1,40 +1,40 @@
 {
-        "folders": [
-                {
-                        "name": "⚡️ Root",
-                        "path": "."
-                },
-                {
-                        "name": "🔐 Identity",
-                        "path": "services/identity"
-                },
-                {
-                        "name": "💸 Cashier",
-                        "path": "services/cashier"
-                },
-                {
-                        "name": "🕹️ Game Server",
-                        "path": "services/game-server"
-                },
-                {
-                        "name": "🎮 Game Client",
-                        "path": "services/game-client"
-                },
-                {
-                        "name": "🌐 Web Portal",
-                        "path": "services/web-portal"
-                }
-        ],
-        "settings": {
-                "search.exclude": {
-                        "**/node_modules": true,
-                        "**/dist": true,
-                        "**/.next": true
-                },
-                "recommendations": [
-                        "biomejs.biome",
-                        "visualstudioexptteam.vscodeintellicode",
-                        "ms-vscode.vscode-typescript-next"
-                ]
-        }
+  "folders": [
+    {
+      "name": "⚡️ Root",
+      "path": "."
+    },
+    {
+      "name": "🔐 Identity",
+      "path": "services/identity"
+    },
+    {
+      "name": "💸 Cashier",
+      "path": "services/cashier"
+    },
+    {
+      "name": "🕹️ Game Server",
+      "path": "services/game-server"
+    },
+    {
+      "name": "🎮 Game Client",
+      "path": "services/game-client"
+    },
+    {
+      "name": "🌐 Web Portal",
+      "path": "services/web-portal"
+    }
+  ],
+  "settings": {
+    "search.exclude": {
+      "**/node_modules": true,
+      "**/dist": true,
+      "**/.next": true
+    },
+    "recommendations": [
+      "biomejs.biome",
+      "visualstudioexptteam.vscodeintellicode",
+      "ms-vscode.vscode-typescript-next"
+    ]
+  }
 }

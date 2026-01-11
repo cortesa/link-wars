@@ -1,11 +1,11 @@
-import { useNavigate } from 'react-router-dom';
-import styles from './Lobby.module.css';
+import { useNavigate } from "react-router-dom";
+import styles from "./Lobby.module.css";
 
 const currentGame = {
   title: "Tower Wars",
   description: "Strategy meets chaos in this multiplayer tower defense game.",
   slug: "tower-wars",
-  thumbnail: "http://localhost:5174/thumbnail"
+  thumbnail: "http://localhost:5174/thumbnail",
 };
 
 function Lobby() {
@@ -26,7 +26,11 @@ function Lobby() {
             allow="autoplay; fullscreen; microphone; camera; midi; encrypted-media"
           />
           <div className={styles.gameOverlay}>
-            <button type="button" className={styles.playNowBtn} onClick={startGame}>
+            <button
+              type="button"
+              className={styles.playNowBtn}
+              onClick={startGame}
+            >
               Play now ▶
             </button>
           </div>
@@ -37,7 +41,7 @@ function Lobby() {
         </div>
       </div>
     </div>
-  )
+  );
 }
 
 export default Lobby;

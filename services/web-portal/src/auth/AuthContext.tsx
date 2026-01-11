@@ -1,13 +1,17 @@
 import {
   createContext,
-  useContext,
-  useState,
-  useEffect,
+  type ReactNode,
   useCallback,
-  ReactNode,
-} from 'react';
-import keycloak, { parseUserFromToken } from './keycloak';
-import type { KeycloakUser } from './keycloak';
+  useContext,
+  useEffect,
+  useState,
+} from "react";
+import {
+  getKeycloak,
+  initKeycloak,
+  type KeycloakUser,
+  parseUserFromToken,
+} from "./keycloak";
 
 interface AuthContextType {
   isAuthenticated: boolean;
@@ -34,75 +38,69 @@ export function AuthProvider({ children }: AuthProviderProps) {
   const [accessToken, setAccessToken] = useState<string | null>(null);
 
   useEffect(() => {
-    const initKeycloak = async () => {
+    const init = async () => {
       try {
-        const authenticated = await keycloak.init({
-          onLoad: 'check-sso',
-          pkceMethod: 'S256',
-          checkLoginIframe: false,
-        });
+        const keycloak = await initKeycloak();
 
-        if (authenticated) {
+        if (keycloak) {
           setIsAuthenticated(true);
           setUser(parseUserFromToken(keycloak));
           setAccessToken(keycloak.token || null);
-          setupTokenRefresh();
+
+          // Setup token refresh
+          keycloak.onTokenExpired = async () => {
+            try {
+              const refreshed = await keycloak.updateToken(30);
+              if (refreshed) {
+                setAccessToken(keycloak.token || null);
+              }
+            } catch (error) {
+              console.error("Token refresh failed:", error);
+              setIsAuthenticated(false);
+              setUser(null);
+              setAccessToken(null);
+            }
+          };
         }
       } catch (error) {
-        console.error('Keycloak initialization failed:', error);
+        console.error("Keycloak initialization failed:", error);
       } finally {
         setIsLoading(false);
       }
     };
 
-    initKeycloak();
-  }, []);
-
-  const setupTokenRefresh = useCallback(() => {
-    keycloak.onTokenExpired = async () => {
-      try {
-        const refreshed = await keycloak.updateToken(30);
-        if (refreshed) {
-          setAccessToken(keycloak.token || null);
-        }
-      } catch (error) {
-        console.error('Token refresh failed:', error);
-        setIsAuthenticated(false);
-        setUser(null);
-        setAccessToken(null);
-      }
-    };
+    init();
   }, []);
 
   const login = useCallback((redirectUri?: string) => {
     if (redirectUri) {
-      sessionStorage.setItem('redirectAfterLogin', redirectUri);
+      sessionStorage.setItem("redirectAfterLogin", redirectUri);
     }
-    keycloak.login({
-      redirectUri: window.location.origin + '/callback',
+    getKeycloak().login({
+      redirectUri: `${window.location.origin}/callback`,
     });
   }, []);
 
   const register = useCallback(() => {
-    keycloak.register({
-      redirectUri: window.location.origin + '/callback',
+    getKeycloak().register({
+      redirectUri: `${window.location.origin}/callback`,
     });
   }, []);
 
   const logout = useCallback(() => {
-    keycloak.logout({
+    getKeycloak().logout({
       redirectUri: window.location.origin,
     });
   }, []);
 
   const hasRole = useCallback((role: string): boolean => {
-    return keycloak.hasRealmRole(role);
+    return getKeycloak().hasRealmRole(role);
   }, []);
 
   const getToken = useCallback(async (): Promise<string | null> => {
     try {
-      await keycloak.updateToken(30);
-      return keycloak.token || null;
+      await getKeycloak().updateToken(30);
+      return getKeycloak().token || null;
     } catch {
       return null;
     }
@@ -126,7 +124,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
 export function useAuth(): AuthContextType {
   const context = useContext(AuthContext);
   if (!context) {
-    throw new Error('useAuth must be used within an AuthProvider');
+    throw new Error("useAuth must be used within an AuthProvider");
   }
   return context;
 }
