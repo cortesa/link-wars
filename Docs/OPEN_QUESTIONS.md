@@ -15,8 +15,8 @@ This document tracks pending decisions and edge-case flows that affect architect
 
 ## 2. Cashier and Economy
 
+- [x] ~~Idempotency scope: per operation vs per match?~~ → **Per operation** via unique `idempotencyKey`
 - [ ] Partial failure: withdraw succeeds but payout fails (retry/queue/manual)?
-- [ ] Idempotency scope: per operation vs per match?
 - [ ] Pool reconciliation audit: verify sum(withdraw) = sum(deposit)?
 - [ ] Insufficient funds flow: UX in portal, and server-side behavior?
 
@@ -34,17 +34,17 @@ This document tracks pending decisions and edge-case flows that affect architect
 
 ## 4. Security
 
+- [x] ~~Cashier secrets: per-session vs per-service; rotation strategy?~~ → **Per-service** shared secrets with HMAC-SHA256. See [CASHIER_SECURITY_SPEC.md](./CASHIER_SECURITY_SPEC.md)
 - [ ] Session token replay risk (URL leaks): one-time use or short TTL?
-- [ ] Cashier secrets: per-session vs per-service; rotation strategy?
 - [ ] postMessage origin validation: strict allowlist for portal/game origins?
 
 ---
 
 ## 5. Observability and Ops
 
+- [x] ~~Structured logging and audit trail for payouts/refunds.~~ → **Implemented** via immutable `transactions` ledger table
 - [ ] Traceability: map `sessionToken` ↔ `roomId` ↔ `txId` consistently.
 - [ ] Minimum metrics: drop rate, cashier errors, average match time.
-- [ ] Structured logging and audit trail for payouts/refunds.
 
 ---
 

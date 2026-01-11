@@ -1,12 +1,26 @@
 import Fastify from "fastify";
+import verifySignaturePlugin from "./plugins/verifySignature.js";
+import walletsRoutes from "./routes/wallets.js";
 
-const PORT = Number(process.env.PORT) || 3000;
+const PORT = Number(process.env.PORT) || 3002;
 
 const app = Fastify({
   logger: true,
 });
 
-// Health check endpoint
+// Register HMAC signature verification plugin
+app.register(verifySignaturePlugin, {
+  services: {
+    'game-server': process.env.GAME_SERVER_SECRET || 'dev-game-server-secret',
+    'web-portal': process.env.WEB_PORTAL_SECRET || 'dev-web-portal-secret',
+  },
+  timestampTolerance: 5 * 60 * 1000, // 5 minutes
+});
+
+// Register wallet routes
+app.register(walletsRoutes);
+
+// Health check endpoint (not protected by signature verification)
 app.get("/health", async () => {
   return {
     status: "ok",
@@ -24,7 +38,12 @@ app.get("/", async () => {
     description: "Economy and wallet service for Link Wars",
     endpoints: {
       health: "/health",
-      docs: "/docs (coming soon)",
+      wallets: {
+        withdraw: "POST /v1/wallets/withdraw",
+        deposit: "POST /v1/wallets/deposit",
+        balance: "GET /v1/wallets/:playerId/balance",
+        transactions: "GET /v1/wallets/:playerId/transactions",
+      },
     },
   };
 });
@@ -33,7 +52,7 @@ app.get("/", async () => {
 const start = async () => {
   try {
     await app.listen({ port: PORT, host: "0.0.0.0" });
-    console.log(`🚀 Cashier API is running on http://0.0.0.0:${PORT}`);
+    console.log(`Cashier API is running on http://0.0.0.0:${PORT}`);
   } catch (err) {
     app.log.error(err);
     process.exit(1);

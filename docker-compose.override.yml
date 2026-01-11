@@ -1,4 +1,8 @@
 services:
+  postgres_cashier:
+    ports:
+      - "5433:5432"
+
   identity:
     build:
       context: .
@@ -17,11 +21,15 @@ services:
       dockerfile: services/cashier/Dockerfile
       target: development
     volumes:
-      - ./services/cashier:/app/services/cashier
+      - ./services/cashier/src:/app/src
+      - ./services/cashier/migrations:/app/migrations
     ports:
-      - "3000:3000"
+      - "3002:3000"
     environment:
       - NODE_ENV=development
+      - DATABASE_URL=postgresql://cashier:securepassword@postgres_cashier:5432/cashier
+      - GAME_SERVER_SECRET=dev-game-server-secret-min-32-chars
+      - WEB_PORTAL_SECRET=dev-web-portal-secret-min-32-chars
 
   game-server:
     build:
