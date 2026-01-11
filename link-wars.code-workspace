@@ -35,6 +35,7 @@
       "biomejs.biome",
       "visualstudioexptteam.vscodeintellicode",
       "ms-vscode.vscode-typescript-next"
-    ]
+    ],
+    "chat.useAgentSkills": true
   }
 }
