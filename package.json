@@ -7,12 +7,13 @@
   "license": "MIT",
   "private": true,
   "workspaces": [
-    "services/*"
+    "services/*",
+    "games/link-wars/*"
   ],
   "scripts": {
     "dev:cashier": "yarn workspace cashier dev",
-    "dev:game": "yarn workspace game-server dev",
-    "dev:client": "yarn workspace client-web dev",
+    "dev:linkwars-server": "yarn workspace linkwars-server dev",
+    "dev:linkwars-client": "yarn workspace linkwars-client dev",
     "test": "yarn workspaces run test",
     "lint": "biome check .",
     "format": "biome format --write .",
