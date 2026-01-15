@@ -1,8 +1,13 @@
-import type { FastifyPluginAsync, FastifyRequest, FastifyReply } from 'fastify';
+import type { FastifyPluginAsync, FastifyReply, FastifyRequest } from 'fastify';
+import crypto from 'node:crypto';
 import { getCashierClient } from '../services/CashierClient.js';
 
 interface TransactionsQuery {
   limit?: string;
+}
+
+interface DepositBody {
+  amount: number;
 }
 
 const walletRoutes: FastifyPluginAsync = async (fastify) => {
@@ -56,6 +61,71 @@ const walletRoutes: FastifyPluginAsync = async (fastify) => {
         return result;
       } catch (error) {
         fastify.log.error(error, 'Failed to get transactions from Cashier');
+        return reply.code(502).send({
+          error: 'Bad Gateway',
+          message: 'Failed to communicate with wallet service',
+        });
+      }
+    }
+  );
+
+  // POST /api/wallet/deposit
+  fastify.post<{ Body: DepositBody }>(
+    '/deposit',
+    {
+      schema: {
+        body: {
+          type: 'object',
+          required: ['amount'],
+          properties: {
+            amount: { type: 'number', minimum: 1 },
+          },
+        },
+        response: {
+          200: {
+            type: 'object',
+            properties: {
+              txId: { type: 'string' },
+              balance: { type: 'number' },
+            },
+          },
+          400: {
+            type: 'object',
+            properties: {
+              error: { type: 'string' },
+              message: { type: 'string' },
+            },
+          },
+        },
+      },
+    },
+    async (request, reply) => {
+      if (!request.user) {
+        return reply.code(401).send({ error: 'Unauthorized' });
+      }
+
+      const { amount } = request.body;
+      if (!Number.isFinite(amount) || amount <= 0) {
+        return reply.code(400).send({
+          error: 'Bad Request',
+          message: 'Amount must be a positive number',
+        });
+      }
+
+      const playerId = request.user.sub;
+      const idempotencyKey = crypto.randomUUID();
+
+      try {
+        const cashierClient = getCashierClient();
+        const result = await cashierClient.deposit(
+          playerId,
+          amount,
+          'portal-deposit',
+          idempotencyKey
+        );
+        return result;
+      } catch (error) {
+        fastify.log.error(error, 'Failed to deposit via Cashier');
         return reply.code(502).send({
           error: 'Bad Gateway',
           message: 'Failed to communicate with wallet service',

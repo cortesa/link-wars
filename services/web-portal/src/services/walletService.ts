@@ -20,6 +20,11 @@ export interface TransactionsResponse {
   transactions: Transaction[];
 }
 
+export interface DepositResponse {
+  txId: string;
+  balance: number;
+}
+
 export async function getBalance(accessToken: string): Promise<BalanceResponse> {
   const response = await fetch(`${BFF_URL}/api/wallet/balance`, {
     headers: {
@@ -48,6 +53,27 @@ export async function getTransactions(
   if (!response.ok) {
     const error = await response.json().catch(() => ({}));
     throw new Error(error.message || 'Failed to fetch transactions');
+  }
+
+  return response.json();
+}
+
+export async function deposit(
+  accessToken: string,
+  amount: number
+): Promise<DepositResponse> {
+  const response = await fetch(`${BFF_URL}/api/wallet/deposit`, {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ amount }),
+  });
+
+  if (!response.ok) {
+    const error = await response.json().catch(() => ({}));
+    throw new Error(error.message || 'Failed to deposit');
   }
 
   return response.json();

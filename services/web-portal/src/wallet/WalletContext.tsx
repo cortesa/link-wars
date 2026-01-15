@@ -9,6 +9,7 @@ import {
 import { useAuth } from '../auth/AuthContext';
 import {
   getBalance,
+  deposit,
   getTransactions,
   type Transaction,
 } from '../services/walletService';
@@ -20,6 +21,7 @@ interface WalletContextType {
   error: string | null;
   refreshBalance: () => Promise<void>;
   refreshTransactions: (limit?: number) => Promise<void>;
+  depositFunds: (amount: number) => Promise<void>;
 }
 
 const WalletContext = createContext<WalletContextType | null>(null);
@@ -82,6 +84,32 @@ export function WalletProvider({ children }: WalletProviderProps) {
     [getToken]
   );
 
+  const depositFunds = useCallback(
+    async (amount: number) => {
+      const token = await getToken();
+      if (!token) {
+        setError('Not authenticated');
+        return;
+      }
+
+      setIsLoading(true);
+      setError(null);
+
+      try {
+        const response = await deposit(token, amount);
+        setBalance(response.balance);
+      } catch (err) {
+        const message = err instanceof Error ? err.message : 'Failed to deposit';
+        setError(message);
+        console.error('Failed to deposit:', err);
+        throw err instanceof Error ? err : new Error(message);
+      } finally {
+        setIsLoading(false);
+      }
+    },
+    [getToken]
+  );
+
   // Auto-fetch balance when authenticated
   useEffect(() => {
     if (isAuthenticated) {
@@ -100,6 +128,7 @@ export function WalletProvider({ children }: WalletProviderProps) {
     error,
     refreshBalance,
     refreshTransactions,
+    depositFunds,
   };
 
   return <WalletContext.Provider value={value}>{children}</WalletContext.Provider>;

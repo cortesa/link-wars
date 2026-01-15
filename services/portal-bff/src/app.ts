@@ -47,6 +47,7 @@ app.get('/', async () => {
       wallet: {
         balance: 'GET /api/wallet/balance',
         transactions: 'GET /api/wallet/transactions',
+        deposit: 'POST /api/wallet/deposit',
       },
     },
   };

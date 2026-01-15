@@ -27,6 +27,11 @@ export interface TransactionsResponse {
   transactions: Transaction[];
 }
 
+export interface DepositResponse {
+  txId: string;
+  balance: number;
+}
+
 interface ErrorResponse {
   message?: string;
 }
@@ -82,6 +87,33 @@ export class CashierClient {
     }
 
     return response.json() as Promise<TransactionsResponse>;
+  }
+
+  async deposit(
+    playerId: string,
+    amount: number,
+    reference: string,
+    idempotencyKey: string
+  ): Promise<DepositResponse> {
+    const payload = { playerId, amount, reference, idempotencyKey };
+    const body = JSON.stringify(payload);
+    const headers = this.signRequest(body);
+
+    const response = await fetch(`${this.cashierUrl}/v1/wallets/deposit`, {
+      method: 'POST',
+      headers: {
+        ...headers,
+        'Content-Type': 'application/json',
+      },
+      body,
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json().catch(() => ({})) as ErrorResponse;
+      throw new Error(errorData.message || `Failed to deposit: ${response.status}`);
+    }
+
+    return response.json() as Promise<DepositResponse>;
   }
 
   private signRequest(body: string): SignatureHeaders {
