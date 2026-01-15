@@ -11,6 +11,7 @@
     "games/link-wars/*"
   ],
   "scripts": {
+    "dev": "docker compose up -d",
     "dev:cashier": "yarn workspace cashier dev",
     "dev:linkwars-server": "yarn workspace linkwars-server dev",
     "dev:linkwars-client": "yarn workspace linkwars-client dev",
