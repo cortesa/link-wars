@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useAuth } from "../auth";
+import { useWallet } from "../wallet";
 import { LogoutIcon, UserIcon } from "./icons";
 import styles from "./UserMenu.module.css";
 
@@ -43,6 +44,7 @@ function DepositModal({
 
 function UserMenu() {
   const { isAuthenticated, isLoading, user, login, logout } = useAuth();
+  const { balance, isLoading: isBalanceLoading } = useWallet();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isDepositModalOpen, setIsDepositModalOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
@@ -79,8 +81,20 @@ function UserMenu() {
     );
   }
 
+  const formatBalance = (amount: number | null): string => {
+    if (amount === null) return "---";
+    return amount.toLocaleString();
+  };
+
   return (
     <div className={styles.userMenu}>
+      <div className={styles.balanceDisplay}>
+        <span className={styles.balanceLabel}>Balance:</span>
+        <span className={styles.balanceAmount}>
+          {isBalanceLoading ? "..." : formatBalance(balance)}
+        </span>
+      </div>
+
       <button
         type="button"
         className={styles.depositBtn}

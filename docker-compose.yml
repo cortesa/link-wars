@@ -115,10 +115,36 @@ services:
       target: development
     volumes:
       - ./services/web-portal:/app/services/web-portal
+    environment:
+      - VITE_PORTAL_BFF_URL=http://localhost:3003
+      - VITE_KEYCLOAK_URL=http://localhost:8080
     ports:
       - "5173:5173"
     depends_on:
-      - game-client
+      - portal-bff
+    networks:
+      - link-wars-net
+    restart: unless-stopped
+
+  portal-bff:
+    build:
+      context: .
+      dockerfile: services/portal-bff/Dockerfile
+      target: development
+    volumes:
+      - ./services/portal-bff/src:/app/src
+    environment:
+      - PORT=3003
+      - KEYCLOAK_URL=http://identity:8080
+      - CASHIER_URL=http://cashier:3000
+      - CASHIER_SERVICE_ID=portal-bff
+      - CASHIER_SECRET=${PORTAL_BFF_SECRET:-dev-portal-bff-secret-min-32-chars}
+      - PORTAL_ORIGIN=http://localhost:5173
+    ports:
+      - "3003:3003"
+    depends_on:
+      - identity
+      - cashier
     networks:
       - link-wars-net
     restart: unless-stopped

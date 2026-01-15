@@ -25,6 +25,31 @@
   gap: 0.75rem;
 }
 
+/* Balance Display */
+.balanceDisplay {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background-color: rgba(255, 255, 255, 0.05);
+  padding: 0.4rem 0.75rem;
+  border-radius: 20px;
+  border: 1px solid var(--border-color);
+}
+
+.balanceLabel {
+  color: #888;
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+.balanceAmount {
+  color: var(--accent-color);
+  font-size: 0.875rem;
+  font-weight: 600;
+  min-width: 40px;
+  text-align: right;
+}
+
 /* Deposit Button */
 .depositBtn {
   background-color: var(--accent-color);
@@ -178,6 +203,18 @@
 @media (max-width: 1024px) {
   .userMenu {
     gap: 0.5rem;
+  }
+
+  .balanceDisplay {
+    padding: 0.3rem 0.6rem;
+  }
+
+  .balanceLabel {
+    display: none;
+  }
+
+  .balanceAmount {
+    font-size: 0.75rem;
   }
 
   .depositBtn {

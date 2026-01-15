@@ -1,0 +1,22 @@
+{
+  "name": "portal-bff",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "tsx watch src/app.ts",
+    "build": "tsc",
+    "start": "node dist/app.js"
+  },
+  "dependencies": {
+    "fastify": "^5.6.2",
+    "fastify-plugin": "^5.1.0",
+    "@fastify/cors": "^10.0.0",
+    "jose": "^6.0.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.7.3",
+    "@types/node": "^22.0.0",
+    "tsx": "^4.7.0"
+  }
+}
