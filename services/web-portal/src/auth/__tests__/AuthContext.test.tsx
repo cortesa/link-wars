@@ -65,6 +65,11 @@ describe("AuthContext", () => {
 
       // Initially loading
       expect(screen.getByTestId("loading")).toHaveTextContent("loading");
+
+      // Allow AuthProvider async init to settle to avoid act() warnings.
+      await waitFor(() => {
+        expect(screen.getByTestId("loading")).toHaveTextContent("ready");
+      });
     });
 
     it("should be unauthenticated after init when no session exists", async () => {
