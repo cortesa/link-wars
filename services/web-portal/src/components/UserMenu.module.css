@@ -25,6 +25,31 @@
   gap: 0.75rem;
 }
 
+/* Balance Display */
+.balanceDisplay {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background-color: rgba(255, 255, 255, 0.05);
+  padding: 0.4rem 0.75rem;
+  border-radius: 20px;
+  border: 1px solid var(--border-color);
+}
+
+.balanceLabel {
+  color: #888;
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+.balanceAmount {
+  color: var(--accent-color);
+  font-size: 0.875rem;
+  font-weight: 600;
+  min-width: 40px;
+  text-align: right;
+}
+
 /* Deposit Button */
 .depositBtn {
   background-color: var(--accent-color);
@@ -159,6 +184,47 @@
   margin-bottom: 1.5rem;
 }
 
+.amountOptions {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.amountOption {
+  background-color: rgba(255, 255, 255, 0.05);
+  color: var(--text-color);
+  border: 1px solid var(--border-color);
+  padding: 0.6rem 1rem;
+  border-radius: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.1s, border-color 0.2s, background-color 0.2s;
+}
+
+.amountOption:hover {
+  transform: scale(1.02);
+  border-color: var(--accent-color);
+}
+
+.amountOptionActive {
+  background-color: var(--accent-color);
+  color: #000;
+  border-color: var(--accent-color);
+}
+
+.modalError {
+  color: #f87171;
+  font-size: 0.8rem;
+  margin-bottom: 1rem;
+}
+
+.modalActions {
+  display: flex;
+  justify-content: center;
+  gap: 0.75rem;
+}
+
 .modalBtn {
   background-color: var(--accent-color);
   color: #000;
@@ -174,10 +240,38 @@
   transform: scale(1.05);
 }
 
+.modalBtnSecondary {
+  background-color: transparent;
+  color: var(--text-color);
+  border: 1px solid var(--border-color);
+  padding: 0.5rem 1.25rem;
+  border-radius: 20px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: border-color 0.2s, transform 0.1s;
+}
+
+.modalBtnSecondary:hover {
+  transform: scale(1.05);
+  border-color: var(--accent-color);
+}
+
 /* Mobile adjustments */
 @media (max-width: 1024px) {
   .userMenu {
     gap: 0.5rem;
+  }
+
+  .balanceDisplay {
+    padding: 0.3rem 0.6rem;
+  }
+
+  .balanceLabel {
+    display: none;
+  }
+
+  .balanceAmount {
+    font-size: 0.75rem;
   }
 
   .depositBtn {

@@ -11,8 +11,13 @@ const app = Fastify({
 // Register HMAC signature verification plugin
 app.register(verifySignaturePlugin, {
   services: {
+    // Games (external providers)
+    'linkwars-server': process.env.GAME_SERVER_SECRET || 'dev-game-server-secret',
+    // Legacy support
     'game-server': process.env.GAME_SERVER_SECRET || 'dev-game-server-secret',
+    // Internal services
     'web-portal': process.env.WEB_PORTAL_SECRET || 'dev-web-portal-secret',
+    'portal-bff': process.env.PORTAL_BFF_SECRET || 'dev-portal-bff-secret-min-32-chars',
   },
   timestampTolerance: 5 * 60 * 1000, // 5 minutes
 });

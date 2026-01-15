@@ -1,16 +1,52 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useAuth } from "../auth";
+import { useWallet } from "../wallet";
 import { LogoutIcon, UserIcon } from "./icons";
 import styles from "./UserMenu.module.css";
 
 function DepositModal({
   isOpen,
   onClose,
+  onDeposit,
 }: {
   isOpen: boolean;
   onClose: () => void;
+  onDeposit: (amount: number) => Promise<void>;
 }) {
+  const [selectedAmount, setSelectedAmount] = useState<number | null>(null);
+  const [error, setError] = useState<string | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const options = [25, 50, 100, 150];
+
+  useEffect(() => {
+    if (!isOpen) {
+      setSelectedAmount(null);
+      setError(null);
+      setIsSubmitting(false);
+    }
+  }, [isOpen]);
+
   if (!isOpen) return null;
+
+  const handleConfirm = async () => {
+    if (!selectedAmount) {
+      setError('Select an amount to continue.');
+      return;
+    }
+
+    setIsSubmitting(true);
+    setError(null);
+
+    try {
+      await onDeposit(selectedAmount);
+      onClose();
+    } catch (err) {
+      const message = err instanceof Error ? err.message : 'Deposit failed';
+      setError(message);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   return (
     <div
@@ -29,13 +65,42 @@ function DepositModal({
         <h2 id="deposit-modal-title" className={styles.modalTitle}>
           Deposit
         </h2>
-        <p className={styles.modalText}>
-          The deposit feature is coming soon. You'll be able to add funds to
-          your account through our secure cashier system.
-        </p>
-        <button type="button" className={styles.modalBtn} onClick={onClose}>
-          Got it
-        </button>
+        <p className={styles.modalText}>Choose an amount to add to your wallet.</p>
+        <div className={styles.amountOptions}>
+          {options.map((amount) => (
+            <button
+              key={amount}
+              type="button"
+              className={
+                selectedAmount === amount
+                  ? `${styles.amountOption} ${styles.amountOptionActive}`
+                  : styles.amountOption
+              }
+              onClick={() => setSelectedAmount(amount)}
+            >
+              {amount}
+            </button>
+          ))}
+        </div>
+        {error && <p className={styles.modalError}>{error}</p>}
+        <div className={styles.modalActions}>
+          <button
+            type="button"
+            className={styles.modalBtnSecondary}
+            onClick={onClose}
+            disabled={isSubmitting}
+          >
+            Cancel
+          </button>
+          <button
+            type="button"
+            className={styles.modalBtn}
+            onClick={handleConfirm}
+            disabled={isSubmitting}
+          >
+            {isSubmitting ? 'Processing...' : 'Confirm'}
+          </button>
+        </div>
       </div>
     </div>
   );
@@ -43,6 +108,7 @@ function DepositModal({
 
 function UserMenu() {
   const { isAuthenticated, isLoading, user, login, logout } = useAuth();
+  const { balance, isLoading: isBalanceLoading, depositFunds } = useWallet();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isDepositModalOpen, setIsDepositModalOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
@@ -79,8 +145,20 @@ function UserMenu() {
     );
   }
 
+  const formatBalance = (amount: number | null): string => {
+    if (amount === null) return "---";
+    return amount.toLocaleString();
+  };
+
   return (
     <div className={styles.userMenu}>
+      <div className={styles.balanceDisplay}>
+        <span className={styles.balanceLabel}>Balance:</span>
+        <span className={styles.balanceAmount}>
+          {isBalanceLoading ? "..." : formatBalance(balance)}
+        </span>
+      </div>
+
       <button
         type="button"
         className={styles.depositBtn}
@@ -126,6 +204,7 @@ function UserMenu() {
       <DepositModal
         isOpen={isDepositModalOpen}
         onClose={() => setIsDepositModalOpen(false)}
+        onDeposit={depositFunds}
       />
     </div>
   );

@@ -52,7 +52,7 @@ docker compose up
 
 - **Web Portal**: [localhost:5173](http://localhost:5173)
 - **Game Client**: [localhost:5174](http://localhost:5174)
-- **Cashier API**: [localhost:3000](http://localhost:3000)
+- **Cashier API**: [localhost:3002](http://localhost:3002) (dev only; keep internal in production)
 - **Game Server**: [localhost:2567](http://localhost:2567)
 - **Identity (Keycloak)**: [localhost:8080](http://localhost:8080)
 

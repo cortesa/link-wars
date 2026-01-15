@@ -1,0 +1,58 @@
+# ==============================================
+# GAME: Link Wars
+# ==============================================
+# This file manages the Link Wars game services.
+# Requires core services to be running first.
+#
+# Usage:
+#   # First, start core services from project root:
+#   docker compose up -d
+#
+#   # Then start this game:
+#   docker compose -f games/link-wars/docker-compose.yml up -d
+#
+#   # Or from project root:
+#   docker compose -f games/link-wars/docker-compose.yml up -d
+# ==============================================
+
+services:
+  server:
+    build:
+      context: ../..
+      dockerfile: games/link-wars/server/Dockerfile
+      target: development
+    container_name: linkwars-server
+    volumes:
+      - ./server/src:/app/games/link-wars/server/src
+    environment:
+      - PORT=2567
+      - CASHIER_URL=http://cashier:3000
+      - CASHIER_SERVICE_ID=linkwars-server
+      - CASHIER_SECRET=${GAME_SERVER_SECRET:-dev-game-server-secret-min-32-chars}
+    ports:
+      - "2567:2567"
+    networks:
+      - link-wars_link-wars-net
+    restart: unless-stopped
+
+  client:
+    build:
+      context: ../..
+      dockerfile: games/link-wars/client/Dockerfile
+      target: development
+    container_name: linkwars-client
+    volumes:
+      - ./client:/app/games/link-wars/client
+    environment:
+      - VITE_GAME_SERVER_URL=ws://localhost:2567
+    ports:
+      - "5174:5174"
+    depends_on:
+      - server
+    networks:
+      - link-wars_link-wars-net
+    restart: unless-stopped
+
+networks:
+  link-wars_link-wars-net:
+    external: true

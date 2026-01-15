@@ -1,10 +1,26 @@
+# ==============================================
+# CORE SERVICES - Link Wars Platform
+# ==============================================
+# This file contains only the core platform services.
+# Games are managed in their own docker-compose files.
+#
+# Usage:
+#   docker compose up -d                    # Start core services
+#   docker compose -f games/link-wars/docker-compose.yml up -d  # Start a game
+# ==============================================
+
 services:
+  # ============================================
+  # Identity Provider (Keycloak)
+  # ============================================
   identity:
     build:
       context: .
       dockerfile: services/identity/Dockerfile
       target: development
     image: ${IDENTITY_IMAGE:-cortesa/link-wars-identity:latest}
+    ports:
+      - "8080:8080"
     volumes:
       - ./services/identity/realm-config:/opt/keycloak/data/import
     environment:
@@ -32,6 +48,9 @@ services:
       - link-wars-net
     restart: unless-stopped
 
+  # ============================================
+  # Cashier API (Economy Service)
+  # ============================================
   cashier:
     build:
       context: .
@@ -45,6 +64,7 @@ services:
       - DATABASE_URL=postgresql://cashier:${DB_PASSWORD:-securepassword}@postgres_cashier:5432/cashier
       - GAME_SERVER_SECRET=${GAME_SERVER_SECRET:-dev-game-server-secret-min-32-chars}
       - WEB_PORTAL_SECRET=${WEB_PORTAL_SECRET:-dev-web-portal-secret-min-32-chars}
+      - PORTAL_BFF_SECRET=${PORTAL_BFF_SECRET:-dev-portal-bff-secret-min-32-chars}
     ports:
       - "3002:3000"
     depends_on:
@@ -72,20 +92,25 @@ services:
       - link-wars-net
     restart: unless-stopped
 
-  game-server:
+  # ============================================
+  # Portal BFF (Backend-For-Frontend)
+  # ============================================
+  portal-bff:
     build:
       context: .
-      dockerfile: services/game-server/Dockerfile
+      dockerfile: services/portal-bff/Dockerfile
       target: development
     volumes:
-      - ./services/game-server/src:/app/services/game-server/src
+      - ./services/portal-bff/src:/app/src
     environment:
-      - PORT=2567
+      - PORT=3003
+      - KEYCLOAK_URL=http://identity:8080
       - CASHIER_URL=http://cashier:3000
-      - CASHIER_SERVICE_ID=game-server
-      - CASHIER_SECRET=${GAME_SERVER_SECRET:-dev-game-server-secret-min-32-chars}
+      - CASHIER_SERVICE_ID=portal-bff
+      - CASHIER_SECRET=${PORTAL_BFF_SECRET:-dev-portal-bff-secret-min-32-chars}
+      - PORTAL_ORIGIN=http://localhost:5173
     ports:
-      - "2567:2567"
+      - "3003:3003"
     depends_on:
       - identity
       - cashier
@@ -93,21 +118,9 @@ services:
       - link-wars-net
     restart: unless-stopped
 
-  game-client:
-    build:
-      context: .
-      dockerfile: services/game-client/Dockerfile
-      target: development
-    volumes:
-      - ./services/game-client:/app/services/game-client
-    ports:
-      - "5174:5174"
-    depends_on:
-      - game-server
-    networks:
-      - link-wars-net
-    restart: unless-stopped
-
+  # ============================================
+  # Web Portal (React Frontend)
+  # ============================================
   web-portal:
     build:
       context: .
@@ -115,10 +128,13 @@ services:
       target: development
     volumes:
       - ./services/web-portal:/app/services/web-portal
+    environment:
+      - VITE_PORTAL_BFF_URL=http://localhost:3003
+      - VITE_KEYCLOAK_URL=http://localhost:8080
     ports:
       - "5173:5173"
     depends_on:
-      - game-client
+      - portal-bff
     networks:
       - link-wars-net
     restart: unless-stopped
@@ -130,4 +146,3 @@ networks:
 volumes:
   postgres_identity_data:
   postgres_cashier_data:
-  redis-data:
