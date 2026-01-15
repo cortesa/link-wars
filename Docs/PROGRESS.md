@@ -100,7 +100,7 @@ docker compose -f games/link-wars/docker-compose.yml up -d
 |---------|-----|
 | Web Portal | http://localhost:5173 |
 | Keycloak Admin | http://localhost:8080 |
-| Cashier API | http://localhost:3002 |
+| Cashier API | http://localhost:3002 (dev only; keep internal in production) |
 | Portal BFF | http://localhost:3003 |
 | Link Wars Server | http://localhost:2567 |
 | Link Wars Client | http://localhost:5174 |
